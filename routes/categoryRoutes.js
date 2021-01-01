@@ -6,8 +6,6 @@ module.exports = (app) => {
 
     app.post("/api/category", async (req,res) =>
     {
-      console.log("In category request body:",req.body);
-
       const {
           name,
           imgURL } = req.body;
@@ -30,8 +28,7 @@ module.exports = (app) => {
     {
       Category.find( (err, categories) =>
       {
-        console.log("Categories list", categories);
-        if (err) {
+       if (err) {
           res.send(err);
         }
           res.send(categories);
@@ -57,17 +54,14 @@ module.exports = (app) => {
      //update one record based on id
      app.patch("/api/category/:id/", async (req,res) =>      
      {
-      console.log("from update api call", req.params);  
        Category.findByIdAndUpdate({_id:  req.params.id}, 
-                                  {name: req.params.name,
-                                  imgURL: req.params.imgURL }, (err,category) =>
+                                  {name: req.body.name,
+                                  imgURL: req.body.imgURL }, (err,category) =>
        {
          if (err) {
-           console.log("From error of record update", err);
-           res.json(err);
+            res.send(err);
          }
-         console.log("from record success of edit",category);
-         res.json({ success: true, message: "Category updated successfully!!!!"}); 
+          res.send({ success: true, message: "Category updated successfully!!!!"}); 
        })
      })
 

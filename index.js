@@ -30,6 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // Allow all primitive types
  require("./routes/authRoutes")(app);
  require("./routes/vendorRoutes")(app);
  require("./routes/categoryRoutes")(app);
+ require("./routes/subcategoryRoutes")(app);
  require("./routes/utilRoutes")(app);
  require("./routes/questionRoutes")(app);
 
