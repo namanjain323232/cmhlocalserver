@@ -42,11 +42,9 @@ module.exports = (app) => {
        Category.findOne({_id: req.params.id}, (err,category) =>
        {
         if (err) {
-          console.log("Error found",err);
-          res.send(err);
+             res.send(err);
         }
-         console.log("from record success",category);
-        res.send(category);
+             res.send(category);
        } );
      })
      
