@@ -70,9 +70,9 @@ module.exports = (app) => {
        Category.findByIdAndRemove( {_id: req.params.id}, (err, category) =>
        {
          if (err) {
-                res.send(err);
+                res.json(err);
          }
-          res.send({ success: true, message: "Category deleted successfully",category});          
+          res.json({ success: true, message: "Category deleted successfully",category});          
        })
      })
 

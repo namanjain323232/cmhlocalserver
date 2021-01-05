@@ -17,7 +17,7 @@ module.exports = (app) => {
         }
         
      const  subcategory = new Subcategory (
-            {name: req.body.subcategory,
+            {name: req.body.name,
              category:categoryval}
      );   
         
@@ -52,6 +52,33 @@ module.exports = (app) => {
                 res.send(result);
         })
     });
+
+    app.patch("/api/subcategory/:id", async (req,res) => {
+
+        Category.findOne({name: req.body.category}, async (err,categoryval) =>
+        {
+        console.log("Category values before save", categoryval); 
+        console.log("SubCategory values before save", req.body);  
+        console.log("SubCategory parameter before save", req.params);           
+        
+        if (err) {
+            res.send(err);
+         }        
+        if ( categoryval.name === req.body.category) {
+        Subcategory.findByIdAndUpdate({ _id: req.params.id},
+                                      { name: req.body.name,
+                                        category: categoryval
+                                        }, (error,result) => {
+           if (error) {
+               res.send(err);
+           }
+           res.send({ success: true, message: "Sub Category updated successfully!!!!", result}); 
+        })
+      } else {
+          res.send({success: false, message: "Category values not found", result})
+      }
+    })
+});
 
     //delete the selected subcategory record
     app.delete("/api/subcategory/:id", async(req,res) => {
