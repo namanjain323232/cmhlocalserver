@@ -11,7 +11,7 @@ module.exports = (app) => {
    
     Category.findOne({name: req.body.category}, async (err,categoryval) =>
     {
-        console.log("Category values before save", categoryval);    
+        
        if (err) {
             res.send(err);
         }
@@ -32,10 +32,11 @@ module.exports = (app) => {
 
   //find all the subcategories records
   app.get("/api/subcategory", async (req,res) => {
-     const query = Subcategory.find({});
-     query.sort({category: 1} );
-     query.exec ( (err,result) =>
-     {
+     Subcategory.find(  (err, result) => {
+    //  console.log("Values from query result", result);
+    //  query.sort({category: 1} );
+    //  query.exec ( (err,result) =>
+     
          if (err) {
              res.send(err);
          }
@@ -72,10 +73,10 @@ module.exports = (app) => {
            if (error) {
                res.send(err);
            }
-           res.send({ success: true, message: "Sub Category updated successfully!!!!", result}); 
+           res.send({ success: true, message: "Sub Category updated successfully!!!!"}); 
         })
       } else {
-          res.send({success: false, message: "Category values not found", result})
+          res.send({success: false, message: "Category values not found"})
       }
     })
 });
@@ -87,7 +88,7 @@ module.exports = (app) => {
             if (err) {
                 res.send(err);
             }
-            res.send( {success:true, message: "Subcategory deleted successfully",result});
+            res.send( {success:true, message: "Subcategory deleted successfully"});
         })
     });
 

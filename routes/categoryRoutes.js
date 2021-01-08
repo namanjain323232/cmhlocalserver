@@ -17,7 +17,8 @@ module.exports = (app) => {
 
       try {
         await category.save(); 
-        res.send({ success: true, message: "Category saved successfully!!!!"});          
+        res.send({ success: true, message: "Category saved successfully!!!!"}); 
+        return;         
       } catch (error) {
           res.send(error);
       }
@@ -32,7 +33,8 @@ module.exports = (app) => {
           res.send(err);
         }
           res.send(categories);
-      })     
+      })  
+        return; 
     });
     
 
