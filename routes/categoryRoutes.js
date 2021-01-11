@@ -31,10 +31,12 @@ module.exports = (app) => {
       {
        if (err) {
           res.send(err);
+          return;
         }
           res.send(categories);
+          return;
       })  
-        return; 
+        
     });
     
 
@@ -60,8 +62,10 @@ module.exports = (app) => {
        {
          if (err) {
             res.send(err);
+            return;
          }
           res.send({ success: true, message: "Category updated successfully!!!!"}); 
+          return;
        })
      })
 

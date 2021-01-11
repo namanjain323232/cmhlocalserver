@@ -24,6 +24,7 @@ module.exports = (app) => {
        try {
            await subcategory.save();
            res.send({ success: true, message: "Subcategory saved successfully !!!!!"});
+           return;
        } catch (error) {
            res.send(error);
        }
@@ -52,6 +53,7 @@ module.exports = (app) => {
             }
                 res.send(result);
         })
+      return;
     });
 
     app.patch("/api/subcategory/:id", async (req,res) => {
@@ -79,6 +81,7 @@ module.exports = (app) => {
           res.send({success: false, message: "Category values not found"})
       }
     })
+    return;
 });
 
     //delete the selected subcategory record
@@ -90,6 +93,7 @@ module.exports = (app) => {
             }
             res.send( {success:true, message: "Subcategory deleted successfully"});
         })
+        return;
     });
 
 
