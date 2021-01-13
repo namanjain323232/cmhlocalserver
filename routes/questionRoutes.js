@@ -46,7 +46,8 @@
         }); 
            
      });
-
+     
+    //route to edit the current question record
      app.patch("/api/questions/:id", async (req,res) => {
 
         await Question.findByIdAndUpdate({_id: req.params.id}, 
@@ -54,9 +55,16 @@
                                           options: req.body.options},
             
             (questionRes,err) => {
-
+            if (err) {
+                res.send(err);
+                return;
+            }
+            res.send({ success: true, message: 'Question record updated successfully !!!!'});
+            return;
         })
      })
+
+     //route to delete the current selected question record
 
      app.delete("/api/questions/:id", async (req,res) => {
 

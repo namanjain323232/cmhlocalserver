@@ -27,6 +27,7 @@ module.exports = (app) => {
            return;
        } catch (error) {
            res.send(error);
+           return;
        }
     })  
 });
@@ -59,10 +60,7 @@ module.exports = (app) => {
     app.patch("/api/subcategory/:id", async (req,res) => {
 
         Category.findOne({name: req.body.category}, async (err,categoryval) =>
-        {
-        console.log("Category values before save", categoryval); 
-        console.log("SubCategory values before save", req.body);  
-        console.log("SubCategory parameter before save", req.params);           
+        {          
         
         if (err) {
             res.send(err);

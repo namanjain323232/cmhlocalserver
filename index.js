@@ -10,6 +10,7 @@ require("./models/Subcategories");
 require("./models/Vendors");
 require("./models/VendorCategories");
 require("./models/Questions");
+require("./models/SubcategoryQuestions");
 const passportConfig=  require("./services/passport");
 const keys = require("./config/keys");
 
@@ -33,6 +34,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // Allow all primitive types
  require("./routes/subcategoryRoutes")(app);
  require("./routes/utilRoutes")(app);
  require("./routes/questionRoutes")(app);
+ require("./routes/subcatQuestionsRoute")(app);
 
 mongoose.connect(keys.MONGOURI,
   {  useNewUrlParser: true,
