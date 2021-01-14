@@ -13,24 +13,21 @@
 
      try {
         await questionOut.save(); 
-        res.send({ success: true, message: "Question and options saved successfully!!!!"});                      
+        return res.send({ success: true, message: "Question and options saved successfully!!!!"});                      
       } catch (err) {
-          res.send(err);
+         return res.send(err);
       }
-      return;
+     
     });
     //fetch all records from Questions Master
     app.get("/api/questions", async (req,res) => {
 
        await Question.find({}, (questionRes,err) => {
             if (err) {
-                res.send(err);
-                return;
+               return res.send(err);               
             }
-             res.send(questionRes);
-             return;
-        })
-    
+               return res.send(questionRes);
+        })    
      });
 
      //fetch one record from Questions Master
@@ -38,11 +35,9 @@
 
         await Question.findOne({_id: req.params.id}, (questionRes, err) => {
             if (err) {
-                res.send(err);
-                return;
+               return res.send(err);              
             }
-            res.send(questionRes); 
-            return;          
+            return res.send(questionRes);                     
         }); 
            
      });
@@ -56,11 +51,9 @@
             
             (questionRes,err) => {
             if (err) {
-                res.send(err);
-                return;
+               return res.send(err);                
             }
-            res.send({ success: true, message: 'Question record updated successfully !!!!'});
-            return;
+               return res.send({ success: true, message: 'Question record updated successfully !!!!'});            
         })
      })
 
@@ -70,11 +63,9 @@
 
         await Question.findByIdAndDelete({_id: req.params.id}, (questionRes,err) => {
          if (err)   {
-             res.send(err);
-             return;
+            return res.send(err);             
          } 
-         res.send({ success: true, message: "Question record deleted successfully",questionres}); 
-         return;       
+          return res.send({ success: true, message: "Question record deleted successfully",questionres});               
         });
        
      })

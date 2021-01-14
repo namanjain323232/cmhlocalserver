@@ -17,25 +17,22 @@ module.exports = (app) => {
 
       try {
         await category.save(); 
-        res.send({ success: true, message: "Category saved successfully!!!!"}); 
-        return;         
+         return res.send({ success: true, message: "Category saved successfully!!!!"});               
       } catch (error) {
-          res.send(error);
+         return res.send(error);
       }
 
     });
     // get all the category records from the database
     app.get("/api/category", async (req,res) =>
     {
-      Category.find( (err, categories) =>
+     await Category.find( (err, categories) =>
       {
        if (err) {
-          res.send(err);
-          return;
-        }
-          res.send(categories);
-          return;
-      })  
+         return res.send(err);
+       }
+         return res.send(categories);
+        })  
         
     });
     
@@ -43,12 +40,12 @@ module.exports = (app) => {
     // get one category record based on id
     app.get("/api/category/:id/", async (req,res) =>
      {           
-       Category.findOne({_id: req.params.id}, (err,category) =>
+      await Category.findOne({_id: req.params.id}, (err,category) =>
        {
         if (err) {
-             res.send(err);
+            return res.send(err);
         }
-             res.send(category);
+           return  res.send(category);
        } );
      })
      
@@ -56,29 +53,27 @@ module.exports = (app) => {
      //update one record based on id
      app.patch("/api/category/:id/", async (req,res) =>      
      {
-       Category.findByIdAndUpdate({_id:  req.params.id}, 
+      await Category.findByIdAndUpdate({_id:  req.params.id}, 
                                   {name: req.body.name,
                                   imgURL: req.body.imgURL }, (err,category) =>
        {
          if (err) {
-            res.send(err);
-            return;
+           return res.send(err);           
          }
-          res.send({ success: true, message: "Category updated successfully!!!!"}); 
-          return;
-       })
+         return res.send({ success: true, message: "Category updated successfully!!!!"}); 
+        })
      })
 
 
      //delete one record based on id
      app.delete("/api/category/:id", async (req,res) =>     
      {
-       Category.findByIdAndRemove( {_id: req.params.id}, (err, category) =>
+      await Category.findByIdAndRemove( {_id: req.params.id}, (err, category) =>
        {
          if (err) {
-                res.json(err);
+              return  res.json(err);
          }
-          res.json({ success: true, message: "Category deleted successfully",category});          
+          return res.json({ success: true, message: "Category deleted successfully",category});          
        })
      })
 

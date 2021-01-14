@@ -9,11 +9,11 @@ module.exports = (app) => {
  app.post("/api/subcategory", async (req,res) => 
 {
    
-    Category.findOne({name: req.body.category}, async (err,categoryval) =>
+   await Category.findOne({name: req.body.category}, async (err,categoryval) =>
     {
         
        if (err) {
-            res.send(err);
+          return  res.send(err);
         }
         
      const  subcategory = new Subcategory (
@@ -23,77 +23,72 @@ module.exports = (app) => {
         
        try {
            await subcategory.save();
-           res.send({ success: true, message: "Subcategory saved successfully !!!!!"});
-           return;
+           return res.send({ success: true, message: "Subcategory saved successfully !!!!!"});           
        } catch (error) {
-           res.send(error);
-           return;
+          return res.send(error);           
        }
     })  
 });
 
   //find all the subcategories records
   app.get("/api/subcategory", async (req,res) => {
-     Subcategory.find(  (err, result) => {
+    await Subcategory.find( {}, (err,result) => {
     //  console.log("Values from query result", result);
     //  query.sort({category: 1} );
     //  query.exec ( (err,result) =>
      
          if (err) {
-             res.send(err);
+            return res.send(err);
          }
-             res.send(result);
-     }) 
+            return res.send(result);
+     }).sort({category : 1}) 
     });
 
     //find one subcategory record by id 
     app.get("/api/subcategory/:id", async (req,res) => {
-        Subcategory.findOne({_id: req.params.id}, (err,result) => {
+       await Subcategory.findOne({_id: req.params.id}, (err,result) => {
             if (err) {
-                res.send(err);                
+               return res.send(err);                
             }
-                res.send(result);
-        })
-      return;
+               return res.send(result);
+        })     
     });
 
     app.patch("/api/subcategory/:id", async (req,res) => {
 
-        Category.findOne({name: req.body.category}, async (err,categoryval) =>
+      await Category.findOne({name: req.body.category.name}, async (err,categoryval) =>
         {          
         
         if (err) {
-            res.send(err);
-         }        
-        if ( categoryval.name === req.body.category) {
-        Subcategory.findByIdAndUpdate({ _id: req.params.id},
+           return res.send(err);
+         }     
+         console.log("categoryval from subcat edit", categoryval) ;
+        if ( categoryval.name === req.body.category.name) {
+        await Subcategory.findByIdAndUpdate({ _id: req.params.id},
                                       { name: req.body.name,
                                         category: categoryval
                                         }, (error,result) => {
            if (error) {
-               res.send(err);
+              return res.send(err);
            }
-           res.send({ success: true, message: "Sub Category updated successfully!!!!"}); 
+         return res.send({ success: true, message: "Sub Category updated successfully!!!!"}); 
         })
       } else {
-          res.send({success: false, message: "Category values not found"})
+        return  res.send({success: false, message: "Category values not found"});          
       }
     })
-    return;
+    
 });
 
     //delete the selected subcategory record
     app.delete("/api/subcategory/:id", async(req,res) => {
-        Subcategory.findByIdAndDelete({ _id: req.params.id}, (err,result) =>
+      await  Subcategory.findByIdAndDelete({ _id: req.params.id}, (err,result) =>
         {
             if (err) {
-                res.send(err);
+              return  res.send(err);
             }
-            res.send( {success:true, message: "Subcategory deleted successfully"});
-        })
-        return;
+            return res.send( {success:true, message: "Subcategory deleted successfully"});
+        })        
     });
-
-
 
 }
