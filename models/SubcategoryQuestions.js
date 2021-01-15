@@ -10,4 +10,4 @@ const subQuestionSchema = new mongoose.Schema({
     subcategory: subcategorySchema,
     questions: [questionSchema]
   });
-  const SubcatQuestions = mongoose.model("SubcatQuestions", subQuestionSchema);
+  const SubcategoryQuestions = mongoose.model("SubcategoryQuestions", subQuestionSchema);
