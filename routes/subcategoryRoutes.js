@@ -56,14 +56,15 @@ module.exports = (app) => {
 
     app.patch("/api/subcategory/:id", async (req,res) => {
 
-      await Category.findOne({name: req.body.category.name}, async (err,categoryval) =>
+      await Category.findOne({name: req.body.category}, async (err,categoryval) =>
         {          
         
         if (err) {
            return res.send(err);
          }     
          console.log("categoryval from subcat edit", categoryval) ;
-        if ( categoryval.name === req.body.category.name) {
+         console.log("req body from subcat edit", req.body) ;
+        if ( categoryval.name === req.body.category) {
         await Subcategory.findByIdAndUpdate({ _id: req.params.id},
                                       { name: req.body.name,
                                         category: categoryval
