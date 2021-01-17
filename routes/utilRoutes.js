@@ -16,8 +16,7 @@ app.get("/api/categoryname", async (req,res) =>
       res.send(err);
       return;
     } 
-      res.send(categories);
-      return;
+      res.json(categories);      
    }     
   )     
 });
@@ -31,8 +30,7 @@ app.get("/api/subcategoryname", async (req, res) => {
      res.send(err);
      return;
    } 
-    res.send(subcategories);
-    return;
+    res.json(subcategories);   
   })
 });
 
@@ -44,8 +42,7 @@ app.get("/api/questionname", async(req,res) => {
       res.send(err);
       return;
     }
-      res.send(questions);
-      return;
+      res.json(questions);      
   })
 });
 }

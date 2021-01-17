@@ -30,6 +30,7 @@
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
     "popper.js": "^1.16.1",
+    "react-toastify": "^6.2.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0"
   }
