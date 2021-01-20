@@ -16,6 +16,6 @@ const vendorCategoriesSchema = new mongoose.Schema ({
    website: String
 });
 
-const VendorCategories = mongoose.model("VendorCategories", vendorCategoriesSchema);
+mongoose.exports= VendorCategories = mongoose.model("VendorCategories", vendorCategoriesSchema);
     
 

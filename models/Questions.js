@@ -3,9 +3,14 @@ const schema= mongoose.Schema;
 
 //create new question schema
 const questionSchema = new schema( {
-    question: String,
-    options: []
+    question: {
+        type: String,
+        required: true },
+    options: {
+        type: [String],
+        required: true
+    } 
 });
 
-const Question= mongoose.model("Question",questionSchema );
+mongoose.exports= Question= mongoose.model("Question",questionSchema );
 

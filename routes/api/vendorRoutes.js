@@ -1,11 +1,13 @@
+const express = require("express");
+const router = express.Router();
 const mongoose = require("mongoose");
+const {body, validationResult} = require('express-validator');
 
 const Vendor = mongoose.model("Vendor");
 const VendorCategories = mongoose.model("VendorCategories");
 
-module.exports = app => {
 
-    app.post("/api/vendor", async (req,res) => {
+    router.post("/", async (req,res) => {
         console.log("In the request body server:", req.body);
         const { firstname,
             lastname,
@@ -46,7 +48,7 @@ module.exports = app => {
             
     } );
 
-    app.post("/api/vendorycategories", async (req,res) => {
+    router.post("/", async (req,res) => {
 
         const {_vendor,
                _subcategory,
@@ -72,5 +74,7 @@ module.exports = app => {
         }       
 
     });
-   };
+   
+    module.exports = router;
+
  

@@ -3,7 +3,11 @@ const schema = mongoose.Schema;
 
 //create the new category schema
 const categorySchema = new mongoose.Schema({
-    name: String,
-    imgURL: String
+    name: {
+      type: String,
+      required: true },
+    imgURL: {
+      type: String,
+      required:true }
   });
-  const Category = mongoose.model("Category", categorySchema);
+  mongoose.exports = Category = mongoose.model("Category", categorySchema);

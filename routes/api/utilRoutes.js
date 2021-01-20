@@ -1,28 +1,29 @@
+const express = require("express");
+const router = express.Router();
 const mongoose = require("mongoose");
+const {body, validationResult} = require('express-validator');
 
 const Category = mongoose.model("Category");
 const Subcategory = mongoose.model("Subcategory");
 const Question = mongoose.model("Question");
 
-module.exports = (app) => {
 
 // get all the category names from the database
-app.get("/api/categoryname", async (req,res) =>
+router.get("/", async (req,res) =>
 {
  const categories =  Category.find ({}, {name:1, _id: false}, (err,categories) =>
  
   {
     if (err) {
-      res.send(err);
-      return;
+      return res.send(err);      
     } 
-      res.json(categories);      
+      res.send(categories);      
    }     
   )     
 });
 
 //get all the subcategory names for the selected category
-app.get("/api/subcategoryname", async (req, res) => {
+router.get("/", async (req, res) => {
   const subcategories = Subcategory.find({}, {name:1, _id: false}, (err,subcategories) =>
   {
    console.log("Subcategories list", subcategories);
@@ -35,7 +36,7 @@ app.get("/api/subcategoryname", async (req, res) => {
 });
 
 //get list of all the questions 
-app.get("/api/questionname", async(req,res) => {
+router.get("/", async(req,res) => {
   const questions = Question.find({}, {question:1, _id: false}, (err,questions) =>
   {
     if (err) {
@@ -45,4 +46,5 @@ app.get("/api/questionname", async(req,res) => {
       res.json(questions);      
   })
 });
-}
+
+module.exports = router;

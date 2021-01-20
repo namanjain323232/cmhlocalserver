@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+
 const vendorSchema = new mongoose.Schema ({
    firstName: String,
    lastname: String,
@@ -14,4 +15,4 @@ const vendorSchema = new mongoose.Schema ({
    country: String
 });
 
-const Vendor = mongoose.model("Vendor", vendorSchema);
+mongoose.exports= Vendor = mongoose.model("Vendor", vendorSchema);
