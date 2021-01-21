@@ -1,50 +1,56 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
-const {body, validationResult} = require('express-validator');
 
 const Category = mongoose.model("Category");
 const Subcategory = mongoose.model("Subcategory");
 const Question = mongoose.model("Question");
 
 
-// get all the category names from the database
-router.get("/", async (req,res) =>
-{
- const categories =  Category.find ({}, {name:1, _id: false}, (err,categories) =>
- 
-  {
-    if (err) {
-      return res.send(err);      
-    } 
-      res.send(categories);      
-   }     
-  )     
-});
+// // get all the category names from the database
+// router.get("/catname", async (req,res) =>
+// {
+//  try {
+//   const categories = await Category.find ({}, {name:1, _id: false});
+//   console.log(categories);
+//   if (!categories) {
+//     return res.status(400).send({message: "No category names were found !!!"})
+//   }
+//     res.json(categories);   
+//  } 
+//  catch (err) {
+//      res.status(500).send({message: "Server error for fetch categories by name"});
+//  }
+// });
 
 //get all the subcategory names for the selected category
-router.get("/", async (req, res) => {
-  const subcategories = Subcategory.find({}, {name:1, _id: false}, (err,subcategories) =>
-  {
-   console.log("Subcategories list", subcategories);
-   if (err) {
-     res.send(err);
-     return;
-   } 
-    res.json(subcategories);   
-  })
-});
+// router.get("/subcatname", async (req, res) => {
+
+//   try {
+//     const subcategories = await Subcategory.find({}, {name:1, _id: false});
+//     if (!subcategories) {
+//       return res.status(400).json({message: "No subcategories were found !!!!"});
+//     }
+//     res.send(subcategories);
+//   }
+//    catch (err) {
+//          res.status(500).json({message: "Server error for fetch sub categories by name",err});
+//    }  
+// });
 
 //get list of all the questions 
-router.get("/", async(req,res) => {
-  const questions = Question.find({}, {question:1, _id: false}, (err,questions) =>
-  {
-    if (err) {
-      res.send(err);
-      return;
-    }
-      res.json(questions);      
-  })
-});
+// router.get("/questionname", async(req,res) => {
+
+//   try {
+//     const questions = await Question.find({}, {question:1, _id: false});
+//     if (!questions) {
+//       return res.status(400).json({message: "No questions/options were found !!!!"});
+//     }
+//     res.json(questions); 
+//   } 
+//    catch (err) {
+//      res.status(500).json({message: "Server error for fetch questions/options name"});
+//  }  
+// });
 
 module.exports = router;

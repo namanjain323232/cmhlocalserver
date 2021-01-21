@@ -46,12 +46,14 @@ const Category = mongoose.model("Category");
   //find all the subcategories records
   router.get("/", async (req,res) => {
     try {
-      const subcategories= await Subcategory.find({}).populate('category', ['name']).sort({category : 1});  
-      console.log("Subcategories",subcategories) ; 
-      if (!subcategories)  {
+      const subcategories= await Subcategory.find({})
+                                            .populate('category', ['name'])
+                                            .sort({category : 1});  
+      console.log(subcategories);
+       if (!subcategories)  {
         return res.status(400).json({msg: 'There are no subcategories !!!!'})
       }
-        res.json(subcategories);
+         res.json(subcategories);
      }
      catch (err) {
        console.error(err);
@@ -62,7 +64,9 @@ const Category = mongoose.model("Category");
     //find one subcategory record by id 
     router.get("/:id", async (req,res) => {
       try {
-       const subcategory= await Subcategory.findOne({_id: req.params.id}).populate('category',['name']).sort({category: 1});
+       const subcategory= await Subcategory.findOne({_id: req.params.id})
+                                            .populate('category',['name'])
+                                            .sort({category: 1});
        if (!subcategory) {
          return res.status(400).json({msg: 'Subcategory not found !!!!'})
        }
@@ -116,6 +120,7 @@ const Category = mongoose.model("Category");
             res.status(200).send( {success:true, message: "Subcategory deleted successfully"});
         })        
     });
+
 
     module.exports = router;
 

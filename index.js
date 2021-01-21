@@ -36,7 +36,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // Allow all primitive types
  app.use("/api/subcategory",require("./routes/api/subcategoryRoutes"));
  app.use("/api/util",require("./routes/api/utilRoutes"));
  app.use("/api/questions",require("./routes/api/questionRoutes"));
- app.use("/api/subcatQuestions",require("./routes/api/subcatQuestionsRoute"));
+ app.use("/api/subcatquestions",require("./routes/api/subcatQuestionsRoute"));
  app.use("/api/vendor",require("./routes/api/vendorRoutes"));
 
 

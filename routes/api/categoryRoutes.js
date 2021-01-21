@@ -38,27 +38,36 @@ const Category = mongoose.model("Category");
     // get all the category records from the database
     router.get("/", async (req,res) =>
     {
-     await Category.find({}, (err, categories) => {
-       if  (err) {
-         res.send(err);
-       }
-         res.send(categories) ;  
-     })
-         
-    });
+    try {
+      categories =await Category.find({});
+      if (!categories) {
+        return res.status(400).send("No categories were found !!!!");
+      }
+      res.json(categories) ; 
+        } 
+        catch (err) {
+           console.log(err);
+           res.status(500).send("Server errror for categories");
+        }           
+     })         
     
-
+   
     // get one category record based on id
     router.get("/:id/", async (req,res) =>
      { 
-    
-      await Category.findOne({_id: req.params.id}, (err, category) => {
-        if (err) {
-          res.send(err);
-        }
-         res.send(category);
-      });       
-     })     
+     try {
+
+      category = await Category.findOne({_id: req.params.id});
+      if (!category) {
+        return res.status(400).send("Categories could not be found !!!!");
+      }
+      res.json(category);
+     }  catch (err) {
+            console.log(err);
+            res.status(500).json({message: "Server error at find a category"});
+     }        
+     });       
+        
 
      //update one category record based on id
      router.put("/:id", 
@@ -92,6 +101,23 @@ const Category = mongoose.model("Category");
          return res.status(500).send("Category delete failed !!!!");
        }
      });
+
+//      // get all the category names from the database
+//      router.get("/", async (req,res) =>
+//    {
+//     try {
+//     const categoriesName = await Category.find ({}, {name:1, _id: false});
+//     console.log("categories",categories);
+    
+//     if (!categoriesName) {
+//     return res.status(400).send({message: "No category names were found !!!"})
+//   }
+//     res.json(categoriesName);   
+//  } 
+//  catch (err) {
+//      res.status(500).send({message: "Server error for fetch categories by name"});
+//  }
+// });
 
     module.exports = router;
 

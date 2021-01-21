@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
-
 const categorySchema = require('./Categories');
 const subcategorySchema = require('./Subcategories');
 const questionSchema= require('./Questions');
@@ -10,12 +9,12 @@ const questionSchema= require('./Questions');
 const subQuestionSchema = new mongoose.Schema({
   category: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'category' },
+    ref: 'Category' },
     subcategory: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'subcategory' },
+      ref: 'Subcategory' },
     questions: 
-          [ {type: mongoose.Schema.Types.ObjectId,
-          ref: 'questions' }] 
+      [ {type: mongoose.Schema.Types.ObjectId,
+          ref: 'Question' }] 
   });
   mongoose.exports= SubcategoryQuestions = mongoose.model("SubcategoryQuestions", subQuestionSchema);

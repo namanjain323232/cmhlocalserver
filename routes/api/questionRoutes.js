@@ -84,4 +84,19 @@
        
      })
 
+     //get list of all the questions 
+    router.get("/", async(req,res) => {
+
+    try {
+      const questionsName = await Question.find({}, {question:1, _id: false});
+      if (!questionsName) {
+      return res.status(400).json({message: "No questions/options were found !!!!"});
+    }
+    res.json(questionsName); 
+   } 
+   catch (err) {
+     res.status(500).json({message: "Server error for fetch questions/options name"});
+   }  
+  });
+
      module.exports = router;
