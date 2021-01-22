@@ -10,7 +10,9 @@ const questionSchema = new schema( {
         type: [String],
         required: true
     } 
-});
+},
+{timestamps: true}
+);
 
 mongoose.exports= Question= mongoose.model("Question",questionSchema );
 

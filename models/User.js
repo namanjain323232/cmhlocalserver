@@ -6,7 +6,12 @@ const userSchema = new schema({
     email: {
         type:String,
         required: true,
-        unique: true
+        unique: true,
+        index:true
+    },
+    role: {
+        type: String,
+        default: "vendor"
     },
     password: {
         type:String,
@@ -21,12 +26,10 @@ const userSchema = new schema({
     url: String,
     avatar: {
         type: String
-    } ,
-    date : {
-        type: Date,
-        default: Date.now
-    }
- });
+    }     
+ },
+ {timestamps: true}
+ );
 
  // two arguments mean we are trying to load something into the model
  mongoose.exports = User = mongoose.model("User",userSchema);

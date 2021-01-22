@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const slugify = require("slugify");
 const {check, validationResult} = require('express-validator');
 const Subcategory = mongoose.model("Subcategory");
 const Category = mongoose.model("Category");
@@ -31,6 +32,7 @@ const Category = mongoose.model("Category");
      }        
      const  subcategory = new Subcategory (
             {name: req.body.name,
+            slug: slugify(req.body.name),
              category:categoryval._id}
      );        
          await subcategory.save();
@@ -96,6 +98,7 @@ const Category = mongoose.model("Category");
          }     
          await Subcategory.findByIdAndUpdate({ _id: req.params.id},
                                       { name: req.body.name,
+                                        slug: slugify(req.body.name),
                                         category: categoryval._id
                                         }, (error,result) => {
            if (error) {

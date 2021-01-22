@@ -41,11 +41,12 @@ const SubcatQuestions = mongoose.model("SubcategoryQuestions");
         }
       );     
       await subcatQuestion.save();
-        res.json({ success: true, message: "Subcategory Questions saved successfully !!!!!"});        
+      res.send("Subcategory Question saved successfully");        
     } catch (error) {
-        res.status(409).json({message: error.message});        
+        res.status(400).send({message: error.message});        
     }
     });
+
   //fetch all the subcategory questions     
   router.get("/", async (req,res) => {
    try {
@@ -57,10 +58,10 @@ const SubcatQuestions = mongoose.model("SubcategoryQuestions");
         return res.status(400).send({msg: 'Unable to find subcategory questions'});
       }
       console.log(subcatquestionval);
-      res.json(subcatquestionval);
+      res.send(subcatquestionval);
     } catch (err) {
        console.log(err);
-       res.status(500).json({msg: err.message});
+       res.status(500).send({msg: err.message});
      }    
     });
 
@@ -83,12 +84,25 @@ const SubcatQuestions = mongoose.model("SubcategoryQuestions");
       }
     });
 
+    router.put("/:id", async (req,res) => {
+      try {
+        const subquestion = await SubcatQuestions.findByIdAndUpdate({_id: req.params.id});
+        if (!subquestion) {
+          return res.status.json(400).send({msg: 'Subcategory question to edit not found !!!'});
+        }
+      }
+      catch (err) {
+        console.log(err);
+        res.status(500).json('Server error on subcategory question edit');
+      }
+    })
+
     //delete one subcategory question record
     router.delete("/:id", async (req,res) => {
       try {
        const subquestion = await SubcatQuestions.findByIdAndDelete({_id: req.params.id});
        if (!subquestion) {
-         return res.status(400).send({msg: 'Subcategory question not found !!!'})
+         return res.status(400).send({msg: 'Subcategory question to delete not found !!!'})
        }
        res.status(200).send( {success:true, message: "Subcategory questions deleted successfully"});
       }

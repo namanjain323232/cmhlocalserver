@@ -13,6 +13,8 @@ const vendorSchema = new mongoose.Schema ({
    city: String,
    county: String,
    country: String
-});
+},
+{timestamps: true}
+);
 
 mongoose.exports= Vendor = mongoose.model("Vendor", vendorSchema);

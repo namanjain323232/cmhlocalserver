@@ -4,7 +4,7 @@ const cookieSession = require("cookie-session");
 const config = require("config");
 const passport = require("passport");
 const bodyParser = require('body-parser');
-const authRoutes = require("./routes/api/authRoutes");
+const fs= require("fs");
 const keys = require("./config/keys");
 
 require("./models/User");
@@ -25,19 +25,22 @@ app.use(
    keys: [keys.cookieKey]
  })
 );
-app.use(bodyParser.json({ extended: true})); // To receive and send requests and responses in JSON format
-app.use(bodyParser.urlencoded({ extended: true })); // Allow all primitive types of JSON. If extended:false, only string and arrays will be allowed.
+ app.use(bodyParser.json({ extended: true})); // To receive and send requests and responses in JSON format
+ app.use(bodyParser.urlencoded({ extended: true })); // Allow all primitive types of JSON. If extended:false, only string and arrays will be allowed.
  app.use(passport.initialize());
  app.use(passport.session());
 
- app.use("/api/user", require("./routes/api/userRoutes"));
- app.use("/api/auth",require("./routes/api/authRoutes")); 
- app.use("/api/category",require("./routes/api/categoryRoutes"));
- app.use("/api/subcategory",require("./routes/api/subcategoryRoutes"));
- app.use("/api/util",require("./routes/api/utilRoutes"));
- app.use("/api/questions",require("./routes/api/questionRoutes"));
- app.use("/api/subcatquestions",require("./routes/api/subcatQuestionsRoute"));
- app.use("/api/vendor",require("./routes/api/vendorRoutes"));
+//  fs.readdirSync("./routes/api")
+//           .map((r) => app.use("/api/"+r,require("./routes/api/"+r)));
+
+ app.use("/api/user", require("./routes/api/user"));
+ app.use("/api/auth",require("./routes/api/auth")); 
+ app.use("/api/category",require("./routes/api/category"));
+ app.use("/api/subcategory",require("./routes/api/subcategory"));
+ app.use("/api/util",require("./routes/api/util"));
+ app.use("/api/questions",require("./routes/api/questions"));
+ app.use("/api/subcatQuestions",require("./routes/api/subcatQuestions"));
+ app.use("/api/vendor",require("./routes/api/vendor"));
 
 
 mongoose.connect(keys.MONGOURI,

@@ -9,5 +9,7 @@ const categorySchema = new mongoose.Schema({
     imgURL: {
       type: String,
       required:true }
-  });
+  },
+  {timestamps: true}
+  );
   mongoose.exports = Category = mongoose.model("Category", categorySchema);

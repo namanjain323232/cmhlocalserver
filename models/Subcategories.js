@@ -8,9 +8,18 @@ const subcategorySchema = new mongoose.Schema ({
     name: {
       type: String,
       required: true  },
+    slug: {
+      type: String,
+      unique: true,
+      lowercase:true,
+      index:true
+    },
     category: {
        type: mongoose.Schema.Types.ObjectId,
-       ref: 'Category' }
-  });
+       ref: 'Category', 
+       required: true}
+  },
+  {timestamps: true}
+  );
 
   mongoose.exports= Subcategory = mongoose.model("Subcategory", subcategorySchema);

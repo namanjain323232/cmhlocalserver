@@ -14,7 +14,9 @@ const vendorCategoriesSchema = new mongoose.Schema ({
    priceType: String,
    price: Number,
    website: String
-});
+},
+{timestamps: true}
+);
 
 mongoose.exports= VendorCategories = mongoose.model("VendorCategories", vendorCategoriesSchema);
     

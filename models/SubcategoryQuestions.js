@@ -9,12 +9,17 @@ const questionSchema= require('./Questions');
 const subQuestionSchema = new mongoose.Schema({
   category: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category' },
+    ref: 'Category',
+    required: true },
     subcategory: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Subcategory' },
+      ref: 'Subcategory',
+      required: true },
     questions: 
       [ {type: mongoose.Schema.Types.ObjectId,
-          ref: 'Question' }] 
-  });
+          ref: 'Question',
+          required:true }] ,
+    },
+    {timestamps : true }
+  );
   mongoose.exports= SubcategoryQuestions = mongoose.model("SubcategoryQuestions", subQuestionSchema);
