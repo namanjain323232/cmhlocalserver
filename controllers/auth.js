@@ -1,27 +1,26 @@
-const passport = require("passport");
+const mongoose = require("mongoose");
 
-exports.create_or_update_user= (req,res) => 
+const User = mongoose.model("User");
+const { check, validationResult} = require('express-validator');
+
+exports.createOrUpdateUser= async (req,res) => 
 {
-   res.json({ data: 'You have hit the create_or_update_user endpoint'});
+    console.log("user body from Auth NNNN", req);
+
+    const user= await User.findOneAndUpdate({email: req.body.email},
+                                       {name :req.body.name, 
+                                        picture: req.body.picture},
+                                       {new: true});
+   if (user) {
+       res.json(user);
+   } else {
+    const newUser= await new User({ email: req.body.email,
+                                     name: req.body.name,
+                                    picture: req.body.picture
+                                    }).save();
+    res.json(newUser);
+   }
 };
 
-exports.google=
-      passport.authenticate("google", {
-          scope: ["profile","email"]
-      });
 
-exports.facebook=
-      passport.authenticate("facebook", {
-          scope: ["email", "user_location", "user_link"]
-      });
 
-exports.logout= (req,res) =>
-{
-    req.logout();
-    res.send(req.user);
-};
-
-exports.current_user= (req,res) =>
-{
-  res.send(req.user);
-};

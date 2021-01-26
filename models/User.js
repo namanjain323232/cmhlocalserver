@@ -1,30 +1,26 @@
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
-
 const userSchema = new schema({
     email: {
         type:String,
-        required: true,
         unique: true,
         index:true
     },
     role: {
         type: String,
-        default: "vendor"
+        default: "subscriber"
     },
     password: {
-        type:String,
-        required:true
+        type:String        
     },
     name: {
-        type: String,
-        required: true
+        type: String
     } ,
     googleId: String,
     facebookId: String,
     url: String,
-    avatar: {
+    picture: {
         type: String
     }     
  },

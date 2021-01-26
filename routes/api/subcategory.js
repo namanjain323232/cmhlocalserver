@@ -51,8 +51,7 @@ const Category = mongoose.model("Category");
       const subcategories= await Subcategory.find({})
                                             .populate('category', ['name'])
                                             .sort({category : 1});  
-      console.log(subcategories);
-       if (!subcategories)  {
+      if (!subcategories)  {
         return res.status(400).json({msg: 'There are no subcategories !!!!'})
       }
          res.json(subcategories);

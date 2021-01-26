@@ -3,9 +3,12 @@ const mongoose = require("mongoose");
 const cookieSession = require("cookie-session");
 const config = require("config");
 const passport = require("passport");
+const morgan= require("morgan");
 const bodyParser = require('body-parser');
 const fs= require("fs");
 const keys = require("./config/keys");
+
+require('dotenv').config();
 
 require("./models/User");
 require("./models/Categories");
@@ -25,6 +28,7 @@ app.use(
    keys: [keys.cookieKey]
  })
 );
+ app.use(morgan("dev"));
  app.use(bodyParser.json({ extended: true})); // To receive and send requests and responses in JSON format
  app.use(bodyParser.urlencoded({ extended: true })); // Allow all primitive types of JSON. If extended:false, only string and arrays will be allowed.
  app.use(passport.initialize());
@@ -46,7 +50,10 @@ app.use(
 mongoose.connect(keys.MONGOURI,
   {  useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex : true});
+  useCreateIndex : true,
+  useFindAndModify: true}
+  ).then( () => console.log("Database Connection Successful !!!!"))
+  .catch( (err) => console.log("Database Connection Error !!!!",err));
 
 
 

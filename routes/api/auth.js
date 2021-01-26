@@ -1,26 +1,39 @@
 const express = require("express");
 const router = express.Router();
-const passport = require("passport");
-const {body, validationResult} = require('express-validator');
-const { create_or_update_user,
-        google,
-        facebook,
-        logout,
-        current_user} = require("../../controllers/auth");
+const mongoose = require("mongoose");
 
-router.get("/create_or_update_user", create_or_update_user);
+const User = mongoose.model("User");
+const { authCheck } = require("../../middlewares/auth");
+const { check, validationResult} = require('express-validator');
 
-router.get("/google", google);   
+// console.log("IN the auth ROUTE", authCheck);
 
-router.get("/google/callback", passport.authenticate("google"));
+router.post( '/createupdateuser', authCheck , async (req,res) =>           
+ { 
+    {
+        const errors= validationResult(req);
+        if (!errors.isEmpty()) {
+           return  res.status(400).json({ errors: errors.array()})
+        }   
+    console.log("user body from auth route XXX", req.user);
+    const user= await User.findOneAndUpdate({email: req.user.email},
+                                                  {name :req.user.name, 
+                                                   picture: req.user.picture},
+                                                  {new: true});
+    if (user) {
+           console.log("User Updated", user);
+            res.json(user);
+    } else {
+        const newUser= await new User({ email: req.user.email,
+                                        name: req.user.name,
+                                        picture: req.user.picture
+                                        }).save();
+               console.log("User added", newUser);                        
+               res.json(newUser);           
+             } 
+   }          
+  });
 
-router.get("/facebook", facebook);     
-
-router.get("/facebook/callback", passport.authenticate("facebook"));
-
-router.get("logout", logout);
-
-router.get("current_user", current_user);
 
 module.exports = router;
 
