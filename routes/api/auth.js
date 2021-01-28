@@ -15,9 +15,8 @@ router.post( '/createupdateuser', authCheck , async (req,res) =>
         if (!errors.isEmpty()) {
            return  res.status(400).json({ errors: errors.array()})
         }   
-    console.log("user body from auth route XXX", req.user);
-    const user= await User.findOneAndUpdate({email: req.user.email},
-                                                  {name :req.user.name, 
+   const user= await User.findOneAndUpdate({email: req.user.email},
+                                                  {name : req.user.email.split("@")[0], 
                                                    picture: req.user.picture},
                                                   {new: true});
     if (user) {
@@ -25,7 +24,7 @@ router.post( '/createupdateuser', authCheck , async (req,res) =>
             res.json(user);
     } else {
         const newUser= await new User({ email: req.user.email,
-                                        name: req.user.name,
+                                        name: req.user.email.split("@")[0],
                                         picture: req.user.picture
                                         }).save();
                console.log("User added", newUser);                        
@@ -34,6 +33,14 @@ router.post( '/createupdateuser', authCheck , async (req,res) =>
    }          
   });
 
+  router.post('/currentuser', authCheck,  async (req,res) => 
+  {
+    await User.findOne({email: req.user.email} ).exec( (err,user) => {
+        if (err) throw new Error(err);
+        res.json(user);
+        console.log("user from current user",user);
+    });
+   });
 
 module.exports = router;
 

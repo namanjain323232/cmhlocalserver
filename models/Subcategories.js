@@ -7,6 +7,7 @@ const categorySchema = require("./Categories");
 const subcategorySchema = new mongoose.Schema ({
     name: {
       type: String,
+      trim: true,
       required: true  },
     slug: {
       type: String,

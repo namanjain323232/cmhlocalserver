@@ -37,7 +37,6 @@ app.use(
 //  fs.readdirSync("./routes/api")
 //           .map((r) => app.use("/api/"+r,require("./routes/api/"+r)));
 
- app.use("/api/user", require("./routes/api/user"));
  app.use("/api/auth",require("./routes/api/auth")); 
  app.use("/api/category",require("./routes/api/category"));
  app.use("/api/subcategory",require("./routes/api/subcategory"));
@@ -51,7 +50,7 @@ mongoose.connect(keys.MONGOURI,
   {  useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex : true,
-  useFindAndModify: true}
+  useFindAndModify: false}
   ).then( () => console.log("Database Connection Successful !!!!"))
   .catch( (err) => console.log("Database Connection Error !!!!",err));
 

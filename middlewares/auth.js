@@ -1,13 +1,11 @@
 const admin =  require("../firebase");
 
 exports.authCheck = async (req,res,next) => {
-    //  console.log("Request Header",req.headers);
-    //  next();
+    
     try {
        const firebaseUser= await admin.auth()
                                       .verifyIdToken(req.headers.authtoken);
-        req.user= firebaseUser;
-        console.log("USER DETAILS:",req.user);
+        req.user= firebaseUser;   
         next();
     }
     catch (err) {
@@ -17,5 +15,7 @@ exports.authCheck = async (req,res,next) => {
        );
     }
 }
+
+
 
 
