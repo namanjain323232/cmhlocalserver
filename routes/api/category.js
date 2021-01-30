@@ -1,12 +1,15 @@
 const express = require("express");
 const router = express.Router();
+const slugify = require("slugify");
 const mongoose = require("mongoose");
+
+const { authCheck, adminCheck } = require("../../middlewares/auth");
 const { check, validationResult} = require('express-validator');
 
 const Category = mongoose.model("Category");
 
  // add new category if it does not already exist
- router.post("/", 
+ router.post("/", authCheck, adminCheck,
  [check('name', 'Category Name is required').not().isEmpty(),
   check('imgURL', 'Please enter a valid image URL').not().isEmpty()  
  ], 
@@ -24,14 +27,14 @@ const Category = mongoose.model("Category");
         return res.status(400).json({ errors:[ {msg: 'Category already exists !!!'}] })
        }       
 
-        category =  new Category ({name,imgURL});
+        category =  new Category ({name,imgURL, slug: slugify(name)});
         
         await category.save();
-        res.send("Category saved successfully !!!!");
+        res.status(200).json(category);
                     
       } catch (err) {
         console.error(err);
-        return res.status(500).send("Failed to save category !!!!");
+        res.status(500).send("Failed to save category !!!!");
       }
      });
 
@@ -53,13 +56,13 @@ const Category = mongoose.model("Category");
     
    
     // get one category record based on id
-    router.get("/:id/", async (req,res) =>
+    router.get("/:slug", authCheck, adminCheck, async (req,res) =>
      { 
      try {
 
-      category = await Category.findOne({_id: req.params.id});
+      category = await Category.findOne({slug: req.params.slug});
       if (!category) {
-        return res.status(400).send("Categories could not be found !!!!");
+        return res.status(400).send("Category could not be found !!!!");
       }
       res.json(category);
      }  catch (err) {
@@ -70,7 +73,7 @@ const Category = mongoose.model("Category");
         
 
      //update one category record based on id
-     router.put("/:id", 
+     router.put("/:slug", authCheck, adminCheck,
       [check('name', 'Category Name is required').not().isEmpty(),
       check('imgURL', 'Please enter a valid image URL').not().isEmpty()  
       ],  
@@ -82,8 +85,10 @@ const Category = mongoose.model("Category");
       }
       try {
         const {name, imgURL } = req.body;
-        const category=  await Category.findByIdAndUpdate({_id:  req.params.id},{name,imgURL });
-        res.status(200).send('Catgeory updated successfully !!!!');
+        const category=  await Category.findByIdAndUpdate({slug:  req.params.slug},
+                                                          {name,imgURL, slug: slugify(name)},
+                                                          {new :true});
+        res.status(200).json(category);
       } catch (err)   {
           console.log(err);
           return res.status(500).send("Failed to update category !!!!");           
@@ -91,33 +96,17 @@ const Category = mongoose.model("Category");
      });
 
      //delete one record based on id
-     router.delete("/:id", async (req,res) =>     
+     router.delete("/:slug", authCheck, adminCheck, async (req,res) =>     
      {
       try {
-      const category = await Category.findByIdAndDelete( {_id: req.params.id});
-      res.json({ success: true, message: "Category deleted successfully",category});          
+        const category = await Category.findByIdAndDelete( {slug: req.params.slug});
+        res.json({ success: true, message: "Category deleted successfully",category});          
        }
        catch (err) {
          return res.status(500).send("Category delete failed !!!!");
        }
      });
 
-//      // get all the category names from the database
-//      router.get("/", async (req,res) =>
-//    {
-//     try {
-//     const categoriesName = await Category.find ({}, {name:1, _id: false});
-//     console.log("categories",categories);
-    
-//     if (!categoriesName) {
-//     return res.status(400).send({message: "No category names were found !!!"})
-//   }
-//     res.json(categoriesName);   
-//  } 
-//  catch (err) {
-//      res.status(500).send({message: "Server error for fetch categories by name"});
-//  }
-// });
 
     module.exports = router;
 

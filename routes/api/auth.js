@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 
 const User = mongoose.model("User");
-const { authCheck } = require("../../middlewares/auth");
+const { authCheck, adminCheck } = require("../../middlewares/auth");
 const { check, validationResult} = require('express-validator');
 
 // console.log("IN the auth ROUTE", authCheck);
@@ -41,6 +41,16 @@ router.post( '/createupdateuser', authCheck , async (req,res) =>
         console.log("user from current user",user);
     });
    });
+
+   router.post('/adminuser', authCheck, adminCheck, async (req,res) => 
+  {
+    await User.findOne({email: req.user.email} ).exec( (err,user) => {
+        if (err) throw new Error(err);
+        res.json(user);
+        console.log("user from admin user",user);
+    });
+   });
+
 
 module.exports = router;
 
