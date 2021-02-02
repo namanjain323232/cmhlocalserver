@@ -4,12 +4,11 @@ const User = mongoose.model("User");
 const admin =  require("../firebase");
 
 exports.authCheck = async (req,res,next) => {
-    
-    try {
+     try {
        const firebaseUser= await admin.auth()
                                       .verifyIdToken(req.headers.authtoken);
         req.user= firebaseUser;   
-        console.log(req.user);
+        // console.log("Auth user from auth route",req.headers);
         next();
     }
     catch (err) {
@@ -23,7 +22,6 @@ exports.authCheck = async (req,res,next) => {
 exports.adminCheck = async (req,res,next) => {
 
     const {email} = req.user;
-
     const adminUser = await User.findOne( {email}).exec();
 
     if (adminUser.role !== 'admin') {

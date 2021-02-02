@@ -5,7 +5,7 @@ const config = require("config");
 const passport = require("passport");
 const morgan= require("morgan");
 const bodyParser = require('body-parser');
-const fs= require("fs");
+const { readdirSync } = require("fs");
 const keys = require("./config/keys");
 
 require('dotenv').config();
@@ -34,16 +34,16 @@ app.use(
  app.use(passport.initialize());
  app.use(passport.session());
 
-//  fs.readdirSync("./routes/api")
-//           .map((r) => app.use("/api/"+r,require("./routes/api/"+r)));
 
- app.use("/api/auth",require("./routes/api/auth")); 
- app.use("/api/category",require("./routes/api/category"));
- app.use("/api/subcategory",require("./routes/api/subcategory"));
- app.use("/api/util",require("./routes/api/util"));
- app.use("/api/questions",require("./routes/api/questions"));
- app.use("/api/subcatQuestions",require("./routes/api/subcatQuestions"));
- app.use("/api/vendor",require("./routes/api/vendor"));
+// readdirSync("./routes").map((r) => app.use("/api", require("./routes/" + r)));
+
+ app.use("/api/auth",require("./routes/auth")); 
+ app.use("/api",require("./routes/category"));
+ app.use("/api",require("./routes/subcategory"));
+//  app.use("/api/util",require("./routes/util"));
+//  app.use("/api/questions",require("./routes/questions"));
+//  app.use("/api/subcatQuestions",require("./routes/subcatQuestions"));
+//  app.use("/api/vendor",require("./routes/vendor"));
 
 
 mongoose.connect(keys.MONGOURI,

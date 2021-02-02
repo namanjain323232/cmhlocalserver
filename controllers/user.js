@@ -5,7 +5,7 @@ const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = mongoose.model("User");
-const keys = require("../../config/keys");
+const keys = require("../config/keys");
 
 const {check, validationResult} = require('express-validator');
 

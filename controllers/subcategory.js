@@ -1,5 +1,4 @@
 const express = require("express");
-const router = express.Router();
 const mongoose = require("mongoose");
 const slugify = require("slugify");
 const {check, validationResult} = require('express-validator');
@@ -8,7 +7,7 @@ const Category = mongoose.model("Category");
 
    
  // add a new subcategory record
- router.post("/", 
+ exports.createsubcategory=  
  [check('category','Category Name is required' ).not().isEmpty(),
   check('name', 'SubCategory Name is required').not().isEmpty()  
  ], 
@@ -33,7 +32,7 @@ const Category = mongoose.model("Category");
      const  subcategory = new Subcategory (
             {name: req.body.name,
             slug: slugify(req.body.name),
-             category:categoryval._id}
+            category:categoryval._id}
      );        
          await subcategory.save();
          res.status(200).send({ message: "Subcategory saved successfully !!!!!"}); 
@@ -43,10 +42,10 @@ const Category = mongoose.model("Category");
       console.error(err);
       res.status(500).send("Failed to save Sub category !!!!");
     }    
-});
+};
 
   //find all the subcategories records
-  router.get("/", async (req,res) => {
+  exports.listsubcategories= async (req,res) => {
     try {
       const subcategories= await Subcategory.find({})
                                             .populate('category', ['name'])
@@ -60,12 +59,12 @@ const Category = mongoose.model("Category");
        console.error(err);
        res.status(500).send("Failed to fetch subcategories");
      }
-    });
+    };
 
     //find one subcategory record by id 
-    router.get("/:id", async (req,res) => {
+    exports.readsubcategory= async (req,res) => {
       try {
-       const subcategory= await Subcategory.findOne({_id: req.params.id})
+       const subcategory= await Subcategory.findOne({slug: req.params.slug})
                                             .populate('category',['name'])
                                             .sort({category: 1});
        if (!subcategory) {
@@ -77,9 +76,9 @@ const Category = mongoose.model("Category");
         console.error(err);
         res.status(500).send("Failed to fetch subcategory");
        }   
-    });
+    };
 
-    router.put("/:id",
+    exports.updatesubcategory=
     [check('category','Category Name is required' ).not().isEmpty(),
     check('name', 'SubCategory Name is required').not().isEmpty()  
     ],
@@ -95,7 +94,7 @@ const Category = mongoose.model("Category");
         if (err) {
            return res.status(400).json(err);
          }     
-         await Subcategory.findByIdAndUpdate({ _id: req.params.id},
+         await Subcategory.findByIdAndUpdate({ slug: req.params.slug},
                                       { name: req.body.name,
                                         slug: slugify(req.body.name),
                                         category: categoryval._id
@@ -110,19 +109,19 @@ const Category = mongoose.model("Category");
     console.error(err);
     return res.status(500).send("Failed to edit Sub category !!!!");
   }
-});
+};
 
-    //delete the selected subcategory record
-    router.delete("/:id", async(req,res) => {
-      await  Subcategory.findByIdAndDelete({ _id: req.params.id}, (err,result) =>
+  //delete the selected subcategory record
+    exports.removesubcategory= async(req,res) => {
+      await  Subcategory.findByIdAndDelete({ slug: req.params.slug}, (err,result) =>
         {
             if (err) {
               return  res.send(err);
             }
             res.status(200).send( {success:true, message: "Subcategory deleted successfully"});
         })        
-    });
+    };
 
 
-    module.exports = router;
+   
 
