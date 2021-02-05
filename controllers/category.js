@@ -5,8 +5,7 @@ const Category = mongoose.model("Category");
 
 const { check, validationResult} = require('express-validator');
 
-console.log("in category function");
- // add new category if it does not already exist
+// add new category if it does not already exist
 exports.createcategory= async (req,res) => 
    {
      try {
@@ -15,8 +14,7 @@ exports.createcategory= async (req,res) =>
       if (category) {
         return res.status(400).json({ errors:[ {msg: 'Category already exists !!!'}] })
        }  
-        category =  new Category ({name,imgURL, slug: slugify(name)});   
-            
+        category =  new Category ({name,imgURL, slug: slugify(name)});            
         await category.save();
         res.status(200).json(category);
                     
@@ -34,8 +32,7 @@ exports.createcategory= async (req,res) =>
       if (!categories) {
         return res.status(400).send("No categories were found !!!!");
       }
-      console.log("category value backend",categories); 
-      res.json(categories);
+       res.json(categories);
         } 
         catch (err) {
            console.log(err);
@@ -48,7 +45,6 @@ exports.createcategory= async (req,res) =>
     exports.readcategory= async (req,res) =>
      { 
      try {
-      console.log("Request parameters from find one", req.params);
       category = await Category.findOne({slug: req.params.slug});
       if (!category) {
         return res.status(400).send("Category could not be found !!!!");
@@ -79,8 +75,7 @@ exports.createcategory= async (req,res) =>
      //delete one record based on id
      exports.removecategory= async (req,res) =>     
      {
-       console.log("request from delete",req.params.slug);
-      try {
+       try {
         const category = await Category.findOneAndDelete( {slug: req.params.slug});
         res.status(200).send("Category deleted successfully!!!!");          
        }

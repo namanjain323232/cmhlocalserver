@@ -7,16 +7,8 @@ const Category = mongoose.model("Category");
 
    
  // add a new subcategory record
- exports.createsubcategory=  
- [check('category','Category Name is required' ).not().isEmpty(),
-  check('name', 'SubCategory Name is required').not().isEmpty()  
- ], 
- async (req,res) => 
+ exports.createsubcategory=  async (req,res) => 
  {
-    const errors= validationResult(req);
-    if (!errors.isEmpty()) {
-       return  res.status(400).json({ errors: errors.array()})
-    }
    try {
    
     let subcategory= await Subcategory.findOne({name:req.body.name});
@@ -50,6 +42,7 @@ const Category = mongoose.model("Category");
       const subcategories= await Subcategory.find({})
                                             .populate('category', ['name'])
                                             .sort({category : 1});  
+      console.log("From subcat list", subcategories);
       if (!subcategories)  {
         return res.status(400).json({msg: 'There are no subcategories !!!!'})
       }
@@ -113,7 +106,7 @@ const Category = mongoose.model("Category");
 
   //delete the selected subcategory record
     exports.removesubcategory= async(req,res) => {
-      await  Subcategory.findByIdAndDelete({ slug: req.params.slug}, (err,result) =>
+      await  Subcategory.findOneAndDelete({ slug: req.params.slug}, (err,result) =>
         {
             if (err) {
               return  res.send(err);
