@@ -16,7 +16,7 @@ const Category = mongoose.model("Category");
       return res.status(400).json({ errors:[ {msg: 'Sub Category already exists !!!'}] })
      } 
 
-   await Category.findOne({name: req.body.category}, async (err,categoryval) =>
+   await Category.findOne({_id: req.body.category}, async (err,categoryval) =>
      {        
        if (err) {
           return  res.send(err);
@@ -42,7 +42,6 @@ const Category = mongoose.model("Category");
       const subcategories= await Subcategory.find({})
                                             .populate('category', ['name'])
                                             .sort({category : 1});  
-      console.log("From subcat list", subcategories);
       if (!subcategories)  {
         return res.status(400).json({msg: 'There are no subcategories !!!!'})
       }
@@ -57,63 +56,49 @@ const Category = mongoose.model("Category");
     //find one subcategory record by id 
     exports.readsubcategory= async (req,res) => {
       try {
-       const subcategory= await Subcategory.findOne({slug: req.params.slug})
-                                            .populate('category',['name'])
-                                            .sort({category: 1});
+       const subcategory= await Subcategory.findOne({slug: req.params.slug}); 
+       console.log("subcat value NOW", subcategory);
        if (!subcategory) {
-         return res.status(400).json({msg: 'Subcategory not found !!!!'})
-       }
-       res.json(subcategory);
-        } 
+        return res.status(400).send("Sub Category could not be found !!!!");
+      }   
+        res.json(subcategory);                
+      } 
        catch (err) {
         console.error(err);
-        res.status(500).send("Failed to fetch subcategory");
+        res.status(500).json("Server error in fetch subcategory");
        }   
     };
-
-    exports.updatesubcategory=
-    [check('category','Category Name is required' ).not().isEmpty(),
-    check('name', 'SubCategory Name is required').not().isEmpty()  
-    ],
-    async (req,res) => {
-      const errors= validationResult(req);
-      if (!errors.isEmpty()) {
-       return  res.status(400).json({ errors: errors.array()})
-       }
-      try {
-               
-        await Category.findOne({name: req.body.category}, async (err,categoryval) =>
-        {          
-        if (err) {
-           return res.status(400).json(err);
-         }     
-         await Subcategory.findByIdAndUpdate({ slug: req.params.slug},
-                                      { name: req.body.name,
-                                        slug: slugify(req.body.name),
-                                        category: categoryval._id
-                                        }, (error,result) => {
-           if (error) {
-              return res.send(err);
-           }
-          res.status(200).send({ success: true, message: "Sub Category updated successfully!!!!"}); 
-        })      
-      })    
-   } catch (err) {
-    console.error(err);
-    return res.status(500).send("Failed to edit Sub category !!!!");
+   
+    //update the subcategory
+    exports.updatesubcategory=  async (req,res) => { 
+      console.log("req params from subcat", req.params);     
+      try {               
+        const subcat=  await Subcategory.findOneAndUpdate({slug: req.params.slug},
+                                      { category: req.body.category,
+                                        name: req.body.name,
+                                        slug: slugify(req.body.name)                                        
+                                      }, {new: true});
+        console.log("value from subcat", subcat);
+        res.status(200).json(subcat);      
+      } 
+    catch (err) {
+      console.error(err);
+      return res.status(500).send("Failed to edit Sub category !!!!");
   }
 };
 
   //delete the selected subcategory record
     exports.removesubcategory= async(req,res) => {
-      await  Subcategory.findOneAndDelete({ slug: req.params.slug}, (err,result) =>
-        {
-            if (err) {
-              return  res.send(err);
-            }
-            res.status(200).send( {success:true, message: "Subcategory deleted successfully"});
-        })        
-    };
+      try {
+        const res=  await Subcategory.findOneAndDelete({ slug: req.params.slug});
+        res.send(`Sub category deleted successfully:${slug}`);
+      }
+      catch (err)
+       {
+        res.send(`Failed to delete sub category: ${err}`);
+       }            
+     };       
+    
 
 
    
