@@ -40,10 +40,10 @@ app.use(
  app.use("/api/auth",require("./routes/auth")); 
  app.use("/api",require("./routes/category"));
  app.use("/api",require("./routes/subcategory"));
-//  app.use("/api/util",require("./routes/util"));
-//  app.use("/api/questions",require("./routes/questions"));
+ app.use("/api",require("./routes/questions"));
 //  app.use("/api/subcatQuestions",require("./routes/subcatQuestions"));
-//  app.use("/api/vendor",require("./routes/vendor"));
+ app.use("/api",require("./routes/vendor"));
+ //  app.use("/api/util",require("./routes/util"));
 
 
 mongoose.connect(keys.MONGOURI,
