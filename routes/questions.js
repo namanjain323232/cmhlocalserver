@@ -14,10 +14,10 @@ const {
 } = require("../controllers/questions");
 
 // routes
-// router.post("/question", authCheck, adminCheck, createquestion);
+router.post("/question", authCheck, adminCheck, createquestion);
 router.get("/questions", listquestions);
-// router.get("/question/:slug", readquestion);
+router.get("/question/:id", readquestion);
 // router.put("/question/:slug", authCheck, adminCheck, updatequestion);
-// router.delete("/question/:slug", authCheck, adminCheck, removequestion);
+router.delete("/question/:id", authCheck, adminCheck, removequestion);
 
 module.exports = router;

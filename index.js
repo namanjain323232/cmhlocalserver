@@ -14,7 +14,7 @@ require("./models/User");
 require("./models/Categories");
 require("./models/Subcategories");
 require("./models/Vendors");
-require("./models/VendorCategories");
+require("./models/VendorInfo");
 require("./models/Questions");
 require("./models/SubcategoryQuestions");
 const passportConfig=  require("./services/passport");
@@ -43,6 +43,7 @@ app.use(
  app.use("/api",require("./routes/questions"));
 //  app.use("/api/subcatQuestions",require("./routes/subcatQuestions"));
  app.use("/api",require("./routes/vendor"));
+ app.use("/api",require("./routes/vendorinfo"));
  //  app.use("/api/util",require("./routes/util"));
 
 

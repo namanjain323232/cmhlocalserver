@@ -4,34 +4,26 @@
  const {check, validationResult} = require('express-validator');
  const Question= mongoose.model("Question");
 
-   // router.post("/", 
-   // [check('question', 'please enter a question').not().isEmpty()  
-   // ], 
-   // async (req,res) => {
-   //    const errors= validationResult(req);
-   //    if (!errors.isEmpty()) {
-   //       return  res.status(400).json({ errors: errors.array()})
-   //    }
-   //  try {     
-   //     const  { question, options } = req.body;
-   //     let questionval = await Question.findOne({ question});
-   //     if (questionval) {
-   //      return res.status(400).json({ errors:[ {msg: 'Question already exists !!!'}] });
-   //     }      
-   //      questionval = new Question( {question, options} );
-   //      await questionval.save(); 
-   //      res.status(200).send({ message: "Question and options saved successfully!!!!"});                      
-   //    } catch (err) {
-   //       console.error(err);
-   //       res.status(500).send("Unable to add Question !!!!");
-   //    }
-   //  });
+   exports.createquestion=  async (req,res) => {
+    try {     
+       const  { question, options } = req.body;
+       let questionval = await Question.findOne({question});
+       if (questionval) {
+        return res.status(400).json({ errors:[ {msg: 'Question already exists !!!'}] });
+       }      
+        questionval = new Question( {question, options} );
+        await questionval.save(); 
+        res.status(200).send({ message: "Question and options saved successfully!!!!"});                      
+      } catch (err) {
+         console.error(err);
+         res.status(500).send("Unable to add Question !!!!");
+      }
+    };
 
     //fetch all records from Questions Master
     exports.listquestions= async (req,res) => {
       try {
         questions= await Question.find({});
-        console.log("From questions",questions);
          res.json(questions);
         } 
       catch (err) {
@@ -41,18 +33,20 @@
       };   
    
 
-//      //fetch one record from Questions Master
-//      router.get("/:id", async (req,res) => {
-
-//         await Question.findOne({_id: req.params.id}, (questionRes, err) => {
-//             if (err) {
-//               return res.status(400).send(err);              
-//             }
-//                res.send(questionRes);                     
-//         }); 
-           
-//      });
-     
+     //fetch one record from Questions Master
+     exports.readquestion = async (req,res) => {
+    try {
+       question=  await Question.findOne({_id: req.params.id});
+       if (!question) {
+        return res.status(400).send("Question data could not be found !!!!");
+        }
+         res.json(question);
+      }
+      catch (err) {          
+              return res.status(500).send(err);              
+            }                     
+     }
+      
 //     //route to edit the current question record
 //      router.put("/:id", 
 //      [check('question', 'please enter a question').not().isEmpty()  
@@ -74,18 +68,20 @@
 //       }
 //      })
 
-//      //route to delete the current selected question record
+     //route to delete the current selected question record
 
-//      router.delete("/:id", async (req,res) => {
-
-//         await Question.findByIdAndDelete({_id: req.params.id}, (questionRes,err) => {
-//          if (err)   {
-//             return res.send(err);             
-//          } 
-//           return res.send({ success: true, message: "Question record deleted successfully",questionRes});               
-//         });
-       
-//      })
+    exports.removequestion=  async (req,res) => {
+      try {
+        question= await Question.findByIdAndDelete({_id: req.params.id});
+        console.log("Question from delete", question);
+        res.status(200).send(`Question deleted successfully!!!! ${question}`);  
+      }  
+       catch (err)   {
+            return res.send(err);             
+       }          
+        };
+      
+     
 
 //      //get list of all the questions 
 //     router.get("/", async(req,res) => {

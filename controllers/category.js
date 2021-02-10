@@ -2,6 +2,7 @@ const express = require("express");
 const slugify = require("slugify");
 const mongoose = require("mongoose");
 const Category = mongoose.model("Category");
+const Subcategory = mongoose.model("Subcategory");
 
 const { check, validationResult} = require('express-validator');
 
@@ -83,6 +84,20 @@ exports.createcategory= async (req,res) =>
          return res.status(400).send("Category delete failed !!!!");
        }
      };
+
+     //get subcategories based on category id
+     exports.getsubcat= async (req,res) => 
+     {
+       const subcat=  await Subcategory.find({category: req.params._id});
+       if (!subcat) {
+          console.log(err);
+          return res.status(400).send("Could not find subcategories for this category");
+         }
+          res.json(subcat);
+       }
+    
+       
+     
 
 
    

@@ -4,13 +4,13 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const {body, validationResult} = require('express-validator');
 
-const Vendor = mongoose.model("Vendor");
+const VendorInfo = mongoose.model("VendorInfo");
 
-    exports.createvendor=  async  (req,res) => {        
+    exports.createvendorinfo=  async  (req,res) => {        
      try {
         console.log("In the request body server:", req.body);
         req.body.slug = slugify(req.body.name);
-        const newvendor = await new Vendor(req.body).save();
+        const newvendor = await new VendorInfo(req.body).save();
         res.json(newvendor);
      }
      catch (err) {
@@ -19,9 +19,9 @@ const Vendor = mongoose.model("Vendor");
      }
     }
     
-    exports.listvendors= async (req,res) => {
+    exports.listvendorsinfo= async (req,res) => {
      try {
-       const vendors = await Vendor.find({});
+       const vendors = await VendorInfo.find({});
        if (!vendors) {
           return res.status(400).send("No vendors data was found !!!!");
        }
@@ -33,5 +33,3 @@ const Vendor = mongoose.model("Vendor");
      }
     }
   
-
- 
