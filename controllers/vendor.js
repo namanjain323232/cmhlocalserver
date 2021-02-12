@@ -9,7 +9,7 @@ const Vendor = mongoose.model("Vendor");
     exports.createvendor=  async  (req,res) => {        
      try {
         console.log("In the request body server:", req.body);
-        req.body.slug = slugify(req.body.name);
+        req.body.slug = slugify(req.body.email);
         const newvendor = await new Vendor(req.body).save();
         res.json(newvendor);
      }

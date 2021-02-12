@@ -1,19 +1,27 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-
 const vendorSchema = new mongoose.Schema ({
-   email: {
+   userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User', 
       required: true
-     },
-   slug: {
+     },  
+     email: {
         type: String,
-        unique: true,
-        lowercase:true,
-        index:true  
-   },   
+        unique:true,
+        index:true
+     },  
+   // slug: {
+   //      type: String,
+   //      unique: true,
+   //      lowercase:true,
+   //      index:true  
+   // },  
+   website: {
+        type: String,
+        maxlength:100
+   }, 
    price: {
       type: Number,
       maxlength:32,

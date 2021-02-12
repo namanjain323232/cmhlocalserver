@@ -2,22 +2,21 @@ const express = require("express");
 const router = express.Router();
 
 // middlewares
-const { authCheck, adminCheck } = require("../middlewares/auth");
+const { adminCheck, authCheck } = require("../middlewares/auth");
 
 // controller
 const {
-  createvendorInfo,
-  readvendorInfo,
-  updatevendorInfo,
-  removevendorInfo,
-  listvendorsInfo
-} = require("../controllers/vendor");
+  createvendorinfo,
+  readvendorinfo,
+  updatevendorinfo,
+  listvendorsinfo,
+  deletevendorinfo
+} = require("../controllers/vendorInfo");
 
 // routes
-router.post("/vendor", authCheck, createvendorInfo);
-router.get("/vendors", listvendorsInfo);
-// router.get("/vendor/:slug", readvendorInfo);
-// router.put("/vendor/:slug", authCheck, adminCheck, updatevendorInfo);
-// router.delete("/vendor/:slug", authCheck, adminCheck, removevendorInfo);
+router.post("/vendorinfo", authCheck, createvendorinfo);
+router.get("/vendorinfo", listvendorsinfo);
+router.get("/vendorInfo/:email", readvendorinfo);
+router.put("/vendorInfo/:email", authCheck, updatevendorinfo);
 
 module.exports = router;
