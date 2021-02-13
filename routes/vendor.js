@@ -10,12 +10,14 @@ const {
   readvendor,
   updatevendor,
   removevendor,
-  listvendors
+  listvendors,
+  listvendorsuser
 } = require("../controllers/vendor");
 
 // routes
 router.post("/vendor", authCheck, createvendor);
 router.get("/vendors", listvendors);
+router.get("/vendors/user", listvendorsuser);
 // router.get("/vendor/:slug", readvendor);
 // router.put("/vendor/:slug", authCheck, adminCheck, updatevendor);
 // router.delete("/vendor/:slug", authCheck, adminCheck, removevendor);

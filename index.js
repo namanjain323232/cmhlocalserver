@@ -29,7 +29,7 @@ app.use(
  })
 );
  app.use(morgan("dev"));
- app.use(bodyParser.json({ extended: true})); // To receive and send requests and responses in JSON format
+ app.use(bodyParser.json({ extended: true, limit: '10mb'})); // To receive and send requests and responses in JSON format
  app.use(bodyParser.urlencoded({ extended: true })); // Allow all primitive types of JSON. If extended:false, only string and arrays will be allowed.
  app.use(passport.initialize());
  app.use(passport.session());
@@ -44,6 +44,7 @@ app.use(
 //  app.use("/api/subcatQuestions",require("./routes/subcatQuestions"));
  app.use("/api",require("./routes/vendor"));
  app.use("/api",require("./routes/vendorinfo"));
+ app.use("/api", require("./routes/cloudinary"));
  //  app.use("/api/util",require("./routes/util"));
 
 

@@ -12,15 +12,15 @@ const vendorSchema = new mongoose.Schema ({
         unique:true,
         index:true
      },  
-   // slug: {
-   //      type: String,
-   //      unique: true,
-   //      lowercase:true,
-   //      index:true  
-   // },  
-   website: {
+   slug: {
         type: String,
-        maxlength:100
+        unique: true,
+        lowercase:true,
+        index:true  
+   },  
+  description: {
+        type: String,
+        maxlength:2000
    }, 
    price: {
       type: Number,
@@ -35,7 +35,7 @@ const vendorSchema = new mongoose.Schema ({
       type:  mongoose.Schema.Types.ObjectId,
       ref: "Category"
    },
-   subcategory: [
+   subcategories: [
       { type:  mongoose.Schema.Types.ObjectId,
          ref: "Subcategory"
       }
@@ -44,10 +44,10 @@ const vendorSchema = new mongoose.Schema ({
    sold: {
       type: Number,
       default: 0
+   },
+   images: {
+      type: Array
    }
-   // images: {
-   //    type: Array
-   // },
    // ratings: {
    //    type: Number,
    //    postedby: String
