@@ -7,7 +7,7 @@ const { authCheck, adminCheck } = require("../middlewares/auth");
 // controller
 const {
   createvendor,
-  readvendor,
+  getvendor,
   updatevendor,
   removevendor,
   listvendors,
@@ -17,9 +17,9 @@ const {
 // routes
 router.post("/vendor", authCheck, createvendor);
 router.get("/vendors", listvendors);
+router.get("/vendor/:id", getvendor);
 router.get("/vendors/user", listvendorsuser);
-// router.get("/vendor/:slug", readvendor);
 // router.put("/vendor/:slug", authCheck, adminCheck, updatevendor);
-// router.delete("/vendor/:slug", authCheck, adminCheck, removevendor);
+router.delete("/vendor/:id", authCheck, removevendor);
 
 module.exports = router;

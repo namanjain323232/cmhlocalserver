@@ -10,7 +10,7 @@ const {
   readvendorinfo,
   updatevendorinfo,
   listvendorsinfo,
-  deletevendorinfo
+  removevendorinfo
 } = require("../controllers/vendorInfo");
 
 // routes
@@ -18,5 +18,6 @@ router.post("/vendorinfo", authCheck, createvendorinfo);
 router.get("/vendorinfo", listvendorsinfo);
 router.get("/vendorInfo/:email", readvendorinfo);
 router.put("/vendorInfo/:email", authCheck, updatevendorinfo);
+router.delete("/vendorinfo/:email", authCheck, adminCheck, removevendorinfo);
 
 module.exports = router;

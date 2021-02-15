@@ -53,17 +53,38 @@ const VendorInfo = mongoose.model("VendorInfo");
      exports.updatevendorinfo= async (req,res) =>      
      {         
        try {
-          const {name, postcode, houseno, addressline1, 
-                 addressline2,city, county, country, website }  = req.body;
+          const {name, postcode, houseNo, addressLine1, 
+                 addressLine2,city, county, country, website }  = req.body;
 
           const vendor=  await VendorInfo.findOneAndUpdate({email:  req.params.email},
-                                                          { name,postcode,houseno,addressline1,addressline2,city,
-                                                            county,country,website,slug: slugify(name)},
+                                                          { name :name,
+                                                            postcode: postcode,
+                                                            houseNo: houseNo,
+                                                            addressLine1: addressLine1,
+                                                            addressLine2:addressLine2,
+                                                            city: city,
+                                                            county: county,
+                                                            country: country,
+                                                            website: website,
+                                                            slug: slugify(name)},
                                                           {new :true});
           res.status(200).json(vendor);
       } catch (err)   {
           console.log(err);
           return res.status(500).send("Failed to update vendor information !!!!");           
          }        
+     };
+
+     //delete one vendor info record based on email
+     exports.removevendorinfo= async (req,res) =>     
+     {
+       try {
+        const vendor = await VendorInfo.findOneAndRemove({ email: req.params.email}).exec();
+        res.status(200).send("Vendor information deleted successfully!!!!");          
+       }
+       catch (err) {
+         console.log(err);
+         return res.status(400).send("Vendor information delete failed !!!!");
+       }
      };
   

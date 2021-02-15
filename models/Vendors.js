@@ -6,18 +6,18 @@ const vendorSchema = new mongoose.Schema ({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User', 
       required: true
-     },  
-     email: {
-        type: String,
-        unique:true,
-        index:true
-     },  
-   slug: {
-        type: String,
-        unique: true,
-        lowercase:true,
-        index:true  
-   },  
+     },
+     vendorInfoId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'VendorInfo',
+        required: true
+     },
+     slug: {
+      type: String,
+      unique: true,
+      lowercase:true,
+      index:true      
+    },     
   description: {
         type: String,
         maxlength:2000
