@@ -47,8 +47,9 @@ const Vendor = mongoose.model("Vendor");
     }
 
     exports.listvendorsuser = async (req,res) => {
-      try {       
-        const vendors = await Vendor.find({userId: req.user.userId})                                   
+      try { 
+         console.log("Request value",req.params) ;     
+         const vendors = await Vendor.find({userId: req.params.userid})                                   
                                     .populate("userId")
                                     .populate("category")
                                     .populate("subcategories")
@@ -57,7 +58,8 @@ const Vendor = mongoose.model("Vendor");
         if (!vendors) {
            return res.status(400).send("No vendors data was found !!!!");
         }
-        res.json(vendors);
+        return res.json(vendors);
+        console.log(vendors);
       }
       catch (err) {
          console.log(err);
@@ -67,7 +69,7 @@ const Vendor = mongoose.model("Vendor");
 
      exports.getvendor= async (req,res) => {
       try {
-         const vendor = await Vendor.find({_id: req.params.id})
+         const vendor = await Vendor.findOne({_id: req.params.id})
                                   .populate("userId")
                                   .populate("vendorInfoId")
                                   .populate("category")
@@ -100,6 +102,11 @@ const Vendor = mongoose.model("Vendor");
          return res.status(400).send("Vendor Category delete failed !!!!");
        }
      };
+
+     exports.updatevendor = async (req,res) => 
+     {
+         console.log("From edit vendor cat",req.params );
+     }
   
 
  

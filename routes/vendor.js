@@ -18,8 +18,8 @@ const {
 router.post("/vendor", authCheck, createvendor);
 router.get("/vendors", listvendors);
 router.get("/vendor/:id", getvendor);
-router.get("/vendors/user", listvendorsuser);
-// router.put("/vendor/:slug", authCheck, adminCheck, updatevendor);
+router.get("/vendors/:userid", listvendorsuser);
+router.put("/vendor/:id", authCheck,  updatevendor);
 router.delete("/vendor/:id", authCheck, removevendor);
 
 module.exports = router;
