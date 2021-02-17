@@ -41,7 +41,7 @@ app.use(
  app.use("/api",require("./routes/category"));
  app.use("/api",require("./routes/subcategory"));
  app.use("/api",require("./routes/questions"));
-//  app.use("/api/subcatQuestions",require("./routes/subcatQuestions"));
+ app.use("/api",require("./routes/subcatquestions"));
  app.use("/api",require("./routes/vendor"));
  app.use("/api",require("./routes/vendorinfo"));
  app.use("/api", require("./routes/cloudinary"));

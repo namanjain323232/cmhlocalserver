@@ -7,8 +7,7 @@ exports.authCheck = async (req,res,next) => {
      try {
        const firebaseUser= await admin.auth()
                                       .verifyIdToken(req.headers.authtoken);
-        req.user= firebaseUser;   
-        // console.log("Auth user from auth route",req.headers);
+        req.user= firebaseUser;     
         next();
     }
     catch (err) {
@@ -18,6 +17,21 @@ exports.authCheck = async (req,res,next) => {
        );
     }
 }
+
+exports.vendorCheck = async (req,res,next) => {
+
+    const {email} = req.user;
+    const vendorUser = await User.findOne( {email}).exec();
+
+    if (vendorUser.role !== 'vendor') {
+        res.status(403).json( {
+            err: "Vendor access only.Access Denied. !!!"
+     }) 
+    } else {
+            next();
+        }
+    }
+
 
 exports.adminCheck = async (req,res,next) => {
 

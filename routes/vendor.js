@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // middlewares
-const { authCheck, adminCheck } = require("../middlewares/auth");
+const { authCheck, vendorCheck } = require("../middlewares/auth");
 
 // controller
 const {
@@ -19,7 +19,7 @@ router.post("/vendor", authCheck, createvendor);
 router.get("/vendors", listvendors);
 router.get("/vendor/:id", getvendor);
 router.get("/vendors/:userid", listvendorsuser);
-router.put("/vendor/:id", authCheck,  updatevendor);
+router.put("/vendor/:id", authCheck, vendorCheck, updatevendor);
 router.delete("/vendor/:id", authCheck, removevendor);
 
 module.exports = router;

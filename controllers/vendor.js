@@ -31,6 +31,8 @@ const Vendor = mongoose.model("Vendor");
      try {
        const vendors = await Vendor.find({})
                                    .limit()
+                                   .populate("userId")
+                                   .populate("vendorInfoId")
                                    .populate("category")
                                    .populate("subcategories")
                                    .sort([["createdAt", "desc"]])
@@ -51,6 +53,7 @@ const Vendor = mongoose.model("Vendor");
          console.log("Request value",req.params) ;     
          const vendors = await Vendor.find({userId: req.params.userid})                                   
                                     .populate("userId")
+                                    .populate("vendorInfoId")
                                     .populate("category")
                                     .populate("subcategories")
                                     .sort([["createdAt", "desc"]])
@@ -74,7 +77,7 @@ const Vendor = mongoose.model("Vendor");
                                   .populate("vendorInfoId")
                                   .populate("category")
                                   .populate("subcategories")
-                                   .exec();                                         
+                                  .exec();                                         
                       
         if (!vendor) {
            return res.status(400).send("No vendor categories data was found !!!!");
@@ -106,6 +109,17 @@ const Vendor = mongoose.model("Vendor");
      exports.updatevendor = async (req,res) => 
      {
          console.log("From edit vendor cat",req.params );
+         try {
+         const vendor= await Vendor.findOneAndUpdate( {_id: req.params.id},
+                                                      req.body,
+                                                      {new: true}
+                                                      ).exec();
+         res.json(vendor);
+         }         
+         catch (err) {
+            console.log(err);
+            return res.status(400).json({err: err.message});
+         }
      }
   
 
