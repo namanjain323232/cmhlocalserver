@@ -28,14 +28,13 @@ const Vendor = mongoose.model("Vendor");
     }
     
     exports.listvendors= async (req,res) => {
-     try {
+     try {       
        const vendors = await Vendor.find({})
-                                   .limit()
                                    .populate("userId")
                                    .populate("vendorInfoId")
                                    .populate("category")
                                    .populate("subcategories")
-                                   .sort([["createdAt", "desc"]])
+                                   .sort([["createdAt", "desc"]])                                  
                                    .exec();
        if (!vendors) {
           return res.status(400).send("No vendors data was found !!!!");
@@ -44,29 +43,55 @@ const Vendor = mongoose.model("Vendor");
      }
      catch (err) {
         console.log(err);
-        res.status(500).send("Server error while fetching vendors");
+        res.status(500).send(`Server error while fetching vendors: ${err.message}`);
      }
     }
 
+    exports.list= async (req,res) => {
+      try {
+        console.log("Req from vendor list", req.body); 
+        const {order,page} = req.body;
+        const currentPage= page || 1;
+        const vendorsPerPage= 3;
+        const vendors = await Vendor.find({})
+                                    .skip((currentPage -1) * vendorsPerPage)
+                                    .populate("userId")
+                                    .populate("vendorInfoId")
+                                    .populate("category")
+                                    .populate("subcategories")
+                                    .sort([[order]])
+                                    .limit(vendorsPerPage)
+                                    .exec();
+        if (!vendors) {
+           return res.status(400).send("No vendors data was found !!!!");
+        }
+        res.json(vendors);
+      }
+      catch (err) {
+         console.log(err);
+         res.status(500).send(`Server error while fetching vendors: ${err.message}`);
+      }
+     }
+
     exports.listvendorsuser = async (req,res) => {
       try { 
-         console.log("Request value",req.params) ;     
-         const vendors = await Vendor.find({userId: req.params.userid})                                   
+         console.log("Request values from vendor list user",req.params) ;     
+         const vendorsusers = await Vendor.find({userId: req.params.userid})                                   
                                     .populate("userId")
                                     .populate("vendorInfoId")
                                     .populate("category")
                                     .populate("subcategories")
                                     .sort([["createdAt", "desc"]])
                                     .exec();
-        if (!vendors) {
+        if (!vendorsusers) {
            return res.status(400).send("No vendors data was found !!!!");
         }
-        return res.json(vendors);
-        console.log(vendors);
+        return res.json(vendorsusers);
+        console.log(vendorsusers);
       }
       catch (err) {
          console.log(err);
-         res.status(500).send("Server error while fetching vendors");
+         res.status(500).send("Server error while fetching vendors for user");
       }
      }
 
@@ -120,6 +145,18 @@ const Vendor = mongoose.model("Vendor");
             console.log(err);
             return res.status(400).json({err: err.message});
          }
+     }
+
+     exports.vendorcount= async (req,res) => { 
+        console.log("Req from vendor count", req.data);    
+      try {
+        const total= await Vendor.find({}).estimatedDocumentCount().exec();
+        console.log("Total",total);
+        return res.json(total);
+      }
+      catch ( err) {
+         console.log(err);        
+      }
      }
   
 
