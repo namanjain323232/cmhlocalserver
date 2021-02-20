@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const {body, validationResult} = require('express-validator');
 
 const Vendor = mongoose.model("Vendor");
+const User = mongoose.model("User");
 
     exports.createvendor=  async  (req,res) => {        
      try {
@@ -96,6 +97,7 @@ const Vendor = mongoose.model("Vendor");
      }
 
      exports.getvendor= async (req,res) => {
+        console.log("Req parameters from getvendor", req.params.id);
       try {
          const vendor = await Vendor.findOne({_id: req.params.id})
                                   .populate("userId")
@@ -107,7 +109,7 @@ const Vendor = mongoose.model("Vendor");
         if (!vendor) {
            return res.status(400).send("No vendor categories data was found !!!!");
         }
-        res.json(vendor);
+         res.json(vendor);
       }
       catch (err) {
          console.log(err);
@@ -157,6 +159,15 @@ const Vendor = mongoose.model("Vendor");
       catch ( err) {
          console.log(err);        
       }
+     }
+
+     exports.vendorRating= async (req,res) => {
+
+      const vendor= Vendor.findById({_id: req.params.vendorid}).exec();
+      const user= User.findOne({email: req.user.email}).exec();
+      const {star} = req.body;
+
+      //check if the user has already left a rating for this vendor
      }
   
 

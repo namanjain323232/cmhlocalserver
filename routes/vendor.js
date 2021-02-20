@@ -13,7 +13,8 @@ const {
   listvendors,
   listvendorsuser,
   list,
-  vendorcount
+  vendorcount,
+  vendorRating
 } = require("../controllers/vendor");
 
 // routes
@@ -26,5 +27,8 @@ router.put("/vendor/:id", authCheck, vendorCheck, updatevendor);
 router.delete("/vendor/:id", authCheck, removevendor);
 
 router.post("/vendors",list);
+
+//route for star rating
+router.post("/vendor/star/:vendorid",authCheck, vendorRating );
 
 module.exports = router;

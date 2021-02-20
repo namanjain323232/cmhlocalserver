@@ -10,7 +10,8 @@ const {
   readsubcategory,
   updatesubcategory,
   removesubcategory,
-  listsubcategories
+  listsubcategories,
+  listcatsubcats
 } = require("../controllers/subcategory");
 
 // routes
@@ -19,5 +20,7 @@ router.get("/subcategories", listsubcategories);
 router.get("/subcategory/:slug", readsubcategory);
 router.put("/subcategory/:slug", authCheck, adminCheck, updatesubcategory);
 router.delete("/subcategory/:slug", authCheck, adminCheck, removesubcategory);
+
+router.get("/subcategories/cat",listcatsubcats);
 
 module.exports = router;

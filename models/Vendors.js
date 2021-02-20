@@ -47,11 +47,12 @@ const vendorSchema = new mongoose.Schema ({
    },
    images: {
       type: Array
-   }
-   // ratings: {
-   //    type: Number,
-   //    postedby: String
-   // }
+   },
+   ratings: [{
+      type: Number,
+      postedby:  {type: mongoose.Schema.Types.ObjectId,
+                  ref: 'User'}
+   }]
 },
 {timestamps: true}
 );

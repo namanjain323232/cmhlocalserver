@@ -97,9 +97,20 @@ const Category = mongoose.model("Category");
        {
         res.send(`Failed to delete sub category: ${err}`);
        }            
-     };       
+     };  
+   
+ 
+   //find all subcategories for the selected category   
+   exports.listcatsubcats = async(req,res) => {
+    try {
+      const subcats= await Subcategory.find({category: req.params.catid}).exec();
+      res.json(subcats);
+    }
+    catch (err) {
+      res.send(`Could not find any subcategories for:${req.params.catid}`);
+    }
+  };
     
 
 
-   
-
+  
