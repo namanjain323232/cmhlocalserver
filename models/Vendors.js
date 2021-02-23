@@ -49,8 +49,8 @@ const vendorSchema = new mongoose.Schema ({
       type: Array
    },
    ratings: [{
-      type: Number,
-      postedby:  {type: mongoose.Schema.Types.ObjectId,
+      star: Number,
+      postedBy:  {type: mongoose.Schema.Types.ObjectId,
                   ref: 'User'}
    }]
 },

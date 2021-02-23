@@ -29,6 +29,6 @@ router.delete("/vendor/:id", authCheck, removevendor);
 router.post("/vendors",list);
 
 //route for star rating
-router.post("/vendor/star/:vendorid",authCheck, vendorRating );
+router.post("/vendor/rating/:id",authCheck, vendorRating );
 
 module.exports = router;

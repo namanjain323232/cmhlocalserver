@@ -163,18 +163,19 @@ const User = mongoose.model("User");
      
      //allow user to add star rating for the ventor
      exports.vendorRating= async (req,res) => {
-
-      const vendor= Vendor.findById({_id: req.params.vendorid}).exec();
-      const user= User.findOne({email: req.user.email}).exec();
+      console.log("Req params", req.params);
+      const vendor= await Vendor.findById({_id: req.params.id}).exec();
+      const user=  await User.findOne({email: req.user.email}).exec();
       const {star} = req.body;
-
+      console.log("vendor value", vendor);
       //check if the user has already left a rating for this vendor
       let existingRatingObject= vendor.ratings.find( 
-                                         (e) => (e.postedBy.toString() === user._id.toString()));
-
+                                         (e) => e.postedBy.toString() === user._id.toString()
+                                         );
+      console.log("Existing rating",existingRatingObject);
      // if user has not left any rating on this vendor, add the rating otherwise update the rating
      if (existingRatingObject === undefined) {
-        let newRating = Vendor.findByIdAndUpdate({_id: vendor._id},
+        let newRating = await Vendor.findByIdAndUpdate({_id: vendor._id},
                          { $push: { ratings: { star: star, postedBy: user._id}}
                          }, {new: true}
                          ).exec();
