@@ -86,24 +86,18 @@ exports.createcategory= async (req,res) =>
        }
      };
 
-     //get subcategories based on category id
-     exports.getsubcat= async (req,res) => 
-     {     
-       const subcat=  await Subcategory.find({slug: req.params.slug});
-       console.log("Subcat values from backend",subcat);
-       const vendors= await Vendor.find({subcategories: subcat})
-                                 .populate('subcategories')
-                                 .populate('vendorInfoId')
-                                 .populate('userId')
-                                 .exec();
-      console.log("Vendor values from backend",vendors);
-       res.json(vendors);
-       if (!subcat) {
-          console.log(err);
-          return res.status(400).send("Could not find subcategories for this category");
-         }
-       
-       }
+      //get subcategories based on category id
+      exports.getsubcat= async (req,res) => 
+      {
+        const subcat=  await Subcategory.find({category: req.params._id});
+        if (!subcat) {
+           console.log(err);
+           return res.status(400).send("Could not find subcategories for this category");
+          }
+           res.json(subcat);
+        }
+
+     
     
        
      

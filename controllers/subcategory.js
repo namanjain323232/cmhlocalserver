@@ -4,7 +4,7 @@ const slugify = require("slugify");
 const {check, validationResult} = require('express-validator');
 const Subcategory = mongoose.model("Subcategory");
 const Category = mongoose.model("Category");
-
+const Vendor= mongoose.model("Vendor");
    
  // add a new subcategory record
  exports.createsubcategory=  async (req,res) => 
@@ -110,6 +110,25 @@ const Category = mongoose.model("Category");
       res.send(`Could not find any subcategories for:${req.params.catid}`);
     }
   };
+
+  //get vendors for subcategories
+  exports.getsubcatvendors= async (req,res) => 
+  {     
+    const subcat=  await Subcategory.findOne({slug: req.params.slug});
+    console.log("Subcat values from backend",subcat);
+    const vendors= await Vendor.find({subcategories: subcat})
+                              .populate('subcategories')
+                              .populate('vendorInfoId')
+                              .populate('userId')
+                              .exec();
+   console.log("Vendor values from backend",vendors);
+    res.json(vendors);
+    if (!subcat) {
+       console.log(err);
+       return res.status(400).send("Could not find subcategories for this category");
+      }
+    
+    }
     
 
 

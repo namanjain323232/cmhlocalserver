@@ -11,7 +11,8 @@ const {
   updatesubcategory,
   removesubcategory,
   listsubcategories,
-  listcatsubcats
+  listcatsubcats,
+  getsubcatvendors
 } = require("../controllers/subcategory");
 
 // routes
@@ -22,5 +23,5 @@ router.put("/subcategory/:slug", authCheck, adminCheck, updatesubcategory);
 router.delete("/subcategory/:slug", authCheck, adminCheck, removesubcategory);
 
 router.get("/subcategories/cat",listcatsubcats);
-
+router.get("/subcategories/vendor/:slug", getsubcatvendors);
 module.exports = router;
