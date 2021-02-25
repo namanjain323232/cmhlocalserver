@@ -52,7 +52,7 @@ const vendorSchema = new mongoose.Schema ({
       star: Number,
       postedBy:  {type: mongoose.Schema.Types.ObjectId,
                   ref: 'User'}
-   }]
+   }],
 },
 {timestamps: true}
 );

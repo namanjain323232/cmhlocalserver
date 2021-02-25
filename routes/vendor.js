@@ -14,7 +14,8 @@ const {
   listvendorsuser,
   list,
   vendorcount,
-  vendorRating
+  vendorRating,
+  listrelatedvendors
 } = require("../controllers/vendor");
 
 // routes
@@ -30,5 +31,8 @@ router.post("/vendors",list);
 
 //route for star rating
 router.post("/vendor/rating/:id",authCheck, vendorRating );
+
+//route for listing other related vendors in the area
+router.get("/vendors/related/:id", listrelatedvendors);
 
 module.exports = router;

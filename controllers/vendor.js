@@ -167,7 +167,7 @@ const User = mongoose.model("User");
       const vendor= await Vendor.findById({_id: req.params.id}).exec();
       const user=  await User.findOne({email: req.user.email}).exec();
       const {star} = req.body;
-      console.log("vendor value", vendor);
+      console.log("vendor value from req body", req.body);
       //check if the user has already left a rating for this vendor
       let existingRatingObject= vendor.ratings.find( 
                                          (e) => e.postedBy.toString() === user._id.toString()
@@ -179,19 +179,37 @@ const User = mongoose.model("User");
                          { $push: { ratings: { star: star, postedBy: user._id}}
                          }, {new: true}
                          ).exec();
-        console.log(newRating);
+        console.log("New Rating",newRating);
         res.json(newRating);
        } else {
-          let updatedRating= Vendor.updateOne( 
-             {ratings:
-                { $elemMatch: existingRatingObject}
+          let updatedRating= await Vendor.updateOne( 
+             {
+             ratings: { $elemMatch: existingRatingObject},
              },
-            { $set: {"ratings.$.star": star}},
-            {new: true}            
+             { $set: {"ratings.$.star": star}},
+             {new: true}            
           ).exec();
-          console.log(updatedRating);
+          console.log("Updated rating",updatedRating);
           res.json(updatedRating);
        }      
+     }
+
+     //get all related vendors for the current vendor
+     exports.listrelatedvendors = async(req,res) => {
+
+      const vendor= await Vendor.findById(req.params.id).exec();
+      console.log(vendor);
+      const related= await Vendor.find({
+           _id: { $ne: vendor._id },
+           category: vendor.category
+      })
+      .limit(3)
+      .populate('category')
+      .populate('subcategories')
+      .populate('postedBy')
+      .exec();
+
+      res.json(related);
      }
   
 
