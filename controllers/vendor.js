@@ -48,6 +48,23 @@ const User = mongoose.model("User");
      }
     }
 
+    //list vendors by count
+    exports.listvendorscount= async (req,res) => {
+      try {
+         const vendors = await Vendor.find({})
+                                    .limit(parseInt(req.params.count))
+                                    .populate("vendorInfoId")
+                                    .populate("category")
+                                    .populate("subcategories")
+                                    .exec();
+         res.json(vendors);
+      }
+      catch (err) {
+         console.log(err);
+         res.status(500).send(`Error fetching vendors by count:${err.message}`);
+      }
+    }
+
     exports.list= async (req,res) => {
       try {
         console.log("Req from vendor list", req.body); 
@@ -195,7 +212,7 @@ const User = mongoose.model("User");
      }
 
      //get all related vendors for the current vendor
-     exports.listrelatedvendors = async(req,res) => {
+     exports.listrelatedvendors = async (req,res) => {
 
       const vendor= await Vendor.findById(req.params.id).exec();
       console.log(vendor);
@@ -211,6 +228,31 @@ const User = mongoose.model("User");
 
       res.json(related);
      }
+
+     //controller for search filters
+
+     const handleQuery =  async (req,res, query) => {
+        
+      const vendors = await Vendor.find({ $text: { $search: query }})
+                                  .populate('category')
+                                  .populate('subcategories')
+                                  .populate('PostedBy')
+                                  .exec();
+      res.json(vendors);
+
+     }
+
+     exports.searchfilters= async (req,res) => {
+
+       const {query} = req.body;
+
+       if (query) {
+          console.log("query",query);
+          await handleQuery(req, res, query);
+       }
+     }
+
+     
   
 
  

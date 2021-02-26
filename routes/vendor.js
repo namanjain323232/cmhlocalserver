@@ -11,16 +11,19 @@ const {
   updatevendor,
   removevendor,
   listvendors,
+  listvendorscount,
   listvendorsuser,
   list,
   vendorcount,
   vendorRating,
-  listrelatedvendors
+  listrelatedvendors,
+  searchfilters
 } = require("../controllers/vendor");
 
 // routes
 router.post("/vendor", authCheck, createvendor);
 router.get("/vendors/total", vendorcount);
+router.get("/vendors/:count", listvendorscount);
 router.get("/vendors", listvendors);
 router.get("/vendor/:id", getvendor);
 router.get("/vendors/:userid", listvendorsuser);
@@ -34,5 +37,8 @@ router.post("/vendor/rating/:id",authCheck, vendorRating );
 
 //route for listing other related vendors in the area
 router.get("/vendors/related/:id", listrelatedvendors);
+
+//route for search filters
+router.post("/search/filters", searchfilters);
 
 module.exports = router;

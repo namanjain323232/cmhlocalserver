@@ -20,7 +20,8 @@ const vendorSchema = new mongoose.Schema ({
     },     
   description: {
         type: String,
-        maxlength:2000
+        maxlength:2000,
+        text:true
    }, 
    price: {
       type: Number,
