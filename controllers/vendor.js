@@ -231,9 +231,30 @@ const User = mongoose.model("User");
 
      //controller for search filters
 
+     const handlePrice= async(rq,res,price) => {
+      
+      try {
+      const vendors= await Vendor.find({
+         price: {
+            $gte: price[0],
+            $lte: price[1]
+         }
+      })
+      .populate("vendorInfoId")
+      .populate('category')
+      .populate('subcategories')
+      .populate('PostedBy')
+      .exec();
+      res.json(vendors);
+   } catch (err) {
+      console.log(err);
+   }
+   }
+    //handle query to search by text
      const handleQuery =  async (req,res, query) => {
-        
+       
       const vendors = await Vendor.find({ $text: { $search: query }})
+                                  .populate("vendorInfoId")
                                   .populate('category')
                                   .populate('subcategories')
                                   .populate('PostedBy')
@@ -244,11 +265,15 @@ const User = mongoose.model("User");
 
      exports.searchfilters= async (req,res) => {
 
-       const {query} = req.body;
+       const {query,price} = req.body;
 
        if (query) {
           console.log("query",query);
           await handleQuery(req, res, query);
+       }
+       if (price !== undefined) {
+          console.log("price",price);
+          await handlePrice(req,res,price)
        }
      }
 

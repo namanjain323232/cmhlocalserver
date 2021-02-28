@@ -22,7 +22,10 @@ const userSchema = new schema({
     url: String,
     picture: {
         type: String
-    }     
+    },
+    stripe_account_id:"",
+    stripe_seller: {},
+    stripeSessionn: {}    
  },
  {timestamps: true}
  );
