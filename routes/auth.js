@@ -9,6 +9,6 @@ const { createUpdateUser, currentUser, adminUser } = require("../controllers/aut
 
 router.post("/createupdateuser", authCheck, createUpdateUser);
 router.post("/currentuser", authCheck, currentUser);
-router.post("/adminuser", authCheck, adminCheck, adminUser);
+router.post("/adminuser", authCheck, adminCheck, currentUser);
 
 module.exports = router;

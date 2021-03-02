@@ -230,7 +230,8 @@ const User = mongoose.model("User");
      }
 
      //controller for search filters
-
+     
+     //handle query to search by price
      const handlePrice= async(rq,res,price) => {
       
       try {
@@ -263,18 +264,85 @@ const User = mongoose.model("User");
 
      }
 
+     //handle query for search by category
+     const handleCategory= async (req,res,category) => {
+        try {
+           const vendors= await Vendor.find({category:category})
+                                      .populate("vendorInfoId")
+                                      .populate('category')
+                                      .populate('subcategories')
+                                      .populate('PostedBy')
+                                      .exec();
+            res.json(vendors);
+
+        }
+        catch (err) {
+           console.log(err);
+        }
+     }
+
+     //handle query for search by rating
+     const handleStars=  (req,res,stars) => {       
+          Vendor.aggregate([
+             {
+                $project: {
+                   document: "$$ROOT",
+                   floorAverage: {
+                      $floor: { $avg: "$ratings.star"}
+                   }
+                }
+             },
+             { $match: {floorAverage: stars} }
+          ])
+          .limit(12)
+          .exec((err,aggregates) => {
+             if (err) {
+                console.log("Aggregate Error:",err);
+             }
+             Vendor.find({_id:aggregates})
+                   .populate("vendorInfoId")
+                   .populate('category')
+                   .populate('subcategories')
+                   .populate('PostedBy')
+                   .exec( (err, vendors) => {
+                      if (err) console.log("Vendor Aggregation error",err);
+                      res.json(vendors);
+                   });
+          })
+        }
+        
+    //handle filter for search by subcategory 
+    const handleSub = async (req,res,sub) => {
+       const vendors = await Vendor.find({subcategories:sub})
+                                  .populate("vendorInfoId")
+                                  .populate('category')
+                                  .populate('subcategories')
+                                  .populate('PostedBy')
+                                  .exec();
+       res.json(vendors);
+    }
+
      exports.searchfilters= async (req,res) => {
 
-       const {query,price} = req.body;
+       const {query,price,category,stars,sub} = req.body;
 
        if (query) {
-          console.log("query",query);
-          await handleQuery(req, res, query);
+              await handleQuery(req, res, query);
        }
        if (price !== undefined) {
-          console.log("price",price);
-          await handlePrice(req,res,price)
+             await handlePrice(req,res,price)
        }
+       if (category) {
+           await handleCategory(req,res,category);
+       }
+       if (stars) {
+             await handleStars(req,res,stars);
+       }
+       if (sub) {
+             await handleSub(req,res,sub);
+       }
+
+
      }
 
      
