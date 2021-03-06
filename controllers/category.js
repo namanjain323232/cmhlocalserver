@@ -24,7 +24,7 @@ exports.createcategory= async (req,res) =>
         console.error(err);
         res.status(500).send("Failed to save category !!!!");
       }
-     };
+   };
 
     // get all the category records from the database
     exports.listcategories= async (req,res) =>

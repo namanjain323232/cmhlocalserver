@@ -1,68 +1,72 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
-const gravatar = require("gravatar");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const User = mongoose.model("User");
-const keys = require("../config/keys");
+const Vendor= mongoose.model("Vendor");
+const Cart= mongoose.model("Cart");
 
-const {check, validationResult} = require('express-validator');
+exports.usercart= async (req,res) => {
+   
+    const {cart} = req.body;
+    console.log("Request from user cart",req.body);
 
-router.post("/",
-       [check('name', 'Name is required').not().isEmpty(),
-        check('email', 'Please enter a valid email').isEmail(),
-        check('password','Please enter a password with 6 or more characters').isLength({min: 6})
-    ],
- async (req,res) => {
-      const errors= validationResult(req);
-      if (!errors.isEmpty()) {
-         return  res.status(400).json({ errors: errors.array()})
-      }
+    let vendors= [];
 
-      const {name, email, password} = req.body;
+    const user= await User.findOne({email: req.user.email}).exec();
 
-      try {
-        let user= await User.findOne({email});
-        if (user) {
-            return res.status(400).json({ errors:[ {msg: 'User already exists !!!'}] })
-        }
+    //check if the cart already exists for this user
 
-        const avatar= gravatar.url(email, {
-            s: '200',
-            r: 'pg',
-            d: 'mm'
-        })
+    let existingCart= await Cart.findOne({orderedBy: user._id}).exec();
 
-        user = new User( { name, email, avatar, password });
+    if(existingCart) {
+        existingCart.remove();
+        console.log("Existing cart removed");
+    }
 
-        const salt= await bcrypt.genSalt(10);
+    for ( let i=0; i< cart.length; i++) {
+        let object= {};
+        object.vendor= cart[i]._id;
+        object.count= cart[i].count;
 
-        user.password= await bcrypt.hash(password,salt);
+        let {price}= await Vendor.findById(cart[i]._id).select("price").exec();
+        object.price= price;
 
-        await user.save();
+        vendors.push(object);
+    }
 
-        const payload = {
-            user: {
-               id: user.id
-            }
-        }
+    console.log("Vendors", vendors);
+    let cartTotal= 0;
 
-        jwt.sign(payload, 
-                 keys.jwtSecret,
-                 {expiresIn: 360000},
-                 (err,token) => {
-                     if (err) throw err;                 
-                     res.json({token});
-                 }
-                 )
-          
-      } catch (err) {
-          console.error(err.message);
-          res.status(500).send('Server error !!!!');
-      }
-      
-});
+    for ( let i=0; i <vendors.length; i++) {
+
+        cartTotal= cartTotal + vendors[i].price * vendors[i].count;
+    }
+
+    console.log("cartTotal", cartTotal);
+
+    let newCart= await new Cart({
+        vendors,
+        cartTotal,
+        orderedBy:user._id
+    }).save();
+
+    console.log(newCart);
+    res.json({ok: true})
+}
+
+exports.getusercart= async (req,res) => 
+{
+   try {
+    const user = await User.findOne({email: req.user.email}).exec();
+    const cartval= await Cart.findOne({orderedBy: user._id})
+                             .populate("vendors.vendor")
+                             .exec();
+    res.json(cartval) ;                 
+   }
+   catch (err) {
+       console.log(err);
+   }
+}
 
 
-module.exports = router;
+
