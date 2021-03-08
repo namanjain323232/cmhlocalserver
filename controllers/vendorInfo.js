@@ -34,7 +34,7 @@ const VendorInfo = mongoose.model("VendorInfo");
      }
     }
 
-    // get one vendor info record based on id
+    // get one vendor info record based on email
     exports.readvendorinfo= async (req,res) =>
      { 
      try {
@@ -48,6 +48,23 @@ const VendorInfo = mongoose.model("VendorInfo");
             res.status(500).json({message: "Server error at find a vendor info"});
      }        
      };  
+
+     // get one vendor info record based on id
+    exports.getvendorinfobyid= async (req,res) =>
+    { 
+      console.log("vendor info id",req.body);     
+    try {
+     vendor = await VendorInfo.findOne({_id:req.body.id});
+     console.log("Vendor Info IDDDD",vendor);
+     if (!vendor) {
+       return res.status(400).send("Vendor Info could not be found !!!!");
+     }
+     res.json(vendor);
+    }  catch (err) {
+           console.log(err);
+           res.status(500).json({message: "Server error at find a vendor info"});
+    }        
+    };  
      
      //update one vendor info record based on email
      exports.updatevendorinfo= async (req,res) =>      

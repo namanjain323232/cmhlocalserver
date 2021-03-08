@@ -33,8 +33,7 @@ exports.usercart= async (req,res) => {
 
         vendors.push(object);
     }
-
-    console.log("Vendors", vendors);
+   
     let cartTotal= 0;
 
     for ( let i=0; i <vendors.length; i++) {
@@ -42,16 +41,14 @@ exports.usercart= async (req,res) => {
         cartTotal= cartTotal + vendors[i].price * vendors[i].count;
     }
 
-    console.log("cartTotal", cartTotal);
-
+   
     let newCart= await new Cart({
         vendors,
         cartTotal,
         orderedBy:user._id
     }).save();
 
-    console.log(newCart);
-    res.json({ok: true})
+     res.json({ok: true})
 }
 
 exports.getusercart= async (req,res) => 
@@ -59,13 +56,32 @@ exports.getusercart= async (req,res) =>
    try {
     const user = await User.findOne({email: req.user.email}).exec();
     const cartval= await Cart.findOne({orderedBy: user._id})
-                             .populate("vendors.vendor")
-                             .exec();
-    res.json(cartval) ;                 
+                             .populate( {
+                                path:"vendors.vendor",                             
+                                populate:[{path: "vendors.vendor.vendorInfoId"}]
+                             }
+                            ).exec();
+    console.log("Cartval from GETCART", cartval);
+     res.json(cartval) ;                 
    }
    catch (err) {
        console.log(err);
    }
+}
+
+exports.emptycart= async (req,res) => {
+
+    const user= await User.findOne({email: req.user.email}).exec();
+    const cart= await Cart.findOneAndRemove({orderedBy: user._id}).exec();
+
+    res.json({ok: true});
+}
+
+exports.saveaddress= async (req,res) => {
+
+    const useraddress= await User.findOneAndUpdate({email: req.user.email}, 
+                                                   {address: req.body.address}).exec();
+    res.json({ok: true});
 }
 
 

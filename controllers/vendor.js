@@ -232,7 +232,7 @@ const User = mongoose.model("User");
      //controller for search filters
      
      //handle query to search by price
-     const handlePrice= async(rq,res,price) => {
+     const handlePrice= async(req,res,price) => {
       
       try {
       const vendors= await Vendor.find({

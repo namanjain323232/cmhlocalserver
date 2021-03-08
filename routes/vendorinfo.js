@@ -10,13 +10,15 @@ const {
   readvendorinfo,
   updatevendorinfo,
   listvendorsinfo,
-  removevendorinfo
+  removevendorinfo,
+  getvendorinfobyid
 } = require("../controllers/vendorInfo");
 
 // routes
 router.post("/vendorinfo", authCheck, createvendorinfo);
 router.get("/vendorinfo", listvendorsinfo);
 router.get("/vendorInfo/:email", readvendorinfo);
+router.get("/vendorInfo/:id", getvendorinfobyid);
 router.put("/vendorInfo/:email", authCheck, updatevendorinfo);
 router.delete("/vendorinfo/:email", authCheck, adminCheck, removevendorinfo);
 

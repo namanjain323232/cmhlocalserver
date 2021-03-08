@@ -23,6 +23,11 @@ const userSchema = new schema({
     picture: {
         type: String
     },
+    cart: {
+      type: Array,
+      default: []
+    },
+    address: String,
     stripe_account_id:"",
     stripe_seller: {},
     stripeSessionn: {}    

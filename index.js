@@ -47,6 +47,7 @@ app.use(
  app.use("/api",require("./routes/vendorinfo"));
  app.use("/api", require("./routes/cloudinary"));
  app.use("/user", require("./routes/user"));
+ app.use("/api", require("./routes/stripe"));
  //  app.use("/api/util",require("./routes/util"));
 
 
