@@ -11,8 +11,7 @@ const stripe= Stripe(keys.STRIPE_SECRET_KEY)
 exports.createconnectaccount= async (req,res) => {
 
     const user= await User.findOne({email: req.user.email}).exec();
-    console.log("request user:", user);
-
+   
     //add a new stripe account id for the user if it does not already exist
     if (!user.stripe_account_id) {
       const account= await stripe.accounts.create({
@@ -27,8 +26,8 @@ exports.createconnectaccount= async (req,res) => {
    //create a login link based on account id
    let accountLink= await stripe.accountLinks.create({
        account: user.stripe_account_id,
-       refresh_url:keys.STRIPE_REDIRECT_URL,
-       return_url:keys.STRIPE_REDIRECT_URL,
+       refresh_url:process.env.STRIPE_REDIRECT_URL,
+       return_url:process.env.STRIPE_REDIRECT_URL,
        type:"account_onboarding"
    });
 
@@ -39,4 +38,12 @@ exports.createconnectaccount= async (req,res) => {
    console.log("Account Link", accountLink);
 
    res.send(`${accountLink.url}?${queryString.stringify(accountLink)}`);
+}
+
+exports.getaccountstatus= async (req,res) => {
+   console.log("GET ACCOUNT STATUS",req);
+   const user= await User.findOne({email: req.user.email}).exec();
+   const account= await stripe.accounts.retrieve(user.stripe_account_id);
+   console.log("User account retrieve",account);
+
 }

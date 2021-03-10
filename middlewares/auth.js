@@ -4,7 +4,7 @@ const User = mongoose.model("User");
 const admin =  require("../firebase");
 
 exports.authCheck = async (req,res,next) => {
-    console.log("authtoken from AUTHCHECK", req.headers.authtoken)
+    // console.log("authtoken from AUTHCHECK", req.headers.authtoken)
      try {
        const firebaseUser= await admin.auth()
                                       .verifyIdToken(req.headers.authtoken);
@@ -42,7 +42,7 @@ exports.adminCheck = async (req,res,next) => {
     if (adminUser.role !== 'admin') {
         res.status(403).json( {
             err: "Admin access only.Access Denied. !!!"
-     }) 
+     }) ;
     } else {
             next();
         }

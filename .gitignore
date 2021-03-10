@@ -2,3 +2,4 @@
 /config/keys.js
 /config/firebaseServiceAccountKey.json
 keys.js
+.env

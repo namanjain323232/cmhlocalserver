@@ -16,5 +16,4 @@ router.get("/cart", authCheck, getusercart );
 router.delete("/cart", authCheck, emptycart);
 router.post("/address", authCheck, saveaddress);
 
-
 module.exports = router;
