@@ -41,9 +41,14 @@ exports.createconnectaccount= async (req,res) => {
 }
 
 exports.getaccountstatus= async (req,res) => {
-   console.log("GET ACCOUNT STATUS",req);
+   console.log("REQ from call backend",req);
    const user= await User.findOne({email: req.user.email}).exec();
    const account= await stripe.accounts.retrieve(user.stripe_account_id);
    console.log("User account retrieve",account);
+   const updatedUser= await User.findByIdAndUpdate({_id:user._id}, {
+                  stripe_seller:account
+   },{new: true}).exec();
+   res.json(updatedUser);
+   
 
 }

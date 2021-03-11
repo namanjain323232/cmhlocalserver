@@ -30,7 +30,7 @@ const userSchema = new schema({
     address: String,
     stripe_account_id:"",
     stripe_seller: {},
-    stripeSessionn: {}    
+    stripeSession: {}    
  },
  {timestamps: true}
  );

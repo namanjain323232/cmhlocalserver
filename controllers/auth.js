@@ -17,7 +17,7 @@ exports.createUpdateUser= async (req,res) =>
                                                    picture: req.user.picture},
                                                   {new: true});
     if (user) {
-           console.log("User Updated", user);
+           console.log("User Updated IN CREATEUPDATE", user);
             res.json(user);
     } else {
         const newUser= await new User({ email: req.user.email,
