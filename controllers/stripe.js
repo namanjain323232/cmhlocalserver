@@ -40,15 +40,63 @@ exports.createconnectaccount= async (req,res) => {
    res.send(`${accountLink.url}?${queryString.stringify(accountLink)}`);
 }
 
+//function to update the payment schedule
+const updateDelayDays= async (accountid) => {
+  
+    const account= await stripe.accounts.update(accountid, {
+                     settings: {
+                         payouts: {
+                             schedule: {
+                                 delay_days: 10
+                             }
+                         }
+                      }
+                    });
+        return account;
+}
+
 exports.getaccountstatus= async (req,res) => {
    console.log("REQ from call backend",req);
    const user= await User.findOne({email: req.user.email}).exec();
    const account= await stripe.accounts.retrieve(user.stripe_account_id);
    console.log("User account retrieve",account);
-   const updatedUser= await User.findByIdAndUpdate({_id:user._id}, {
-                  stripe_seller:account
-   },{new: true}).exec();
-   res.json(updatedUser);
-   
 
+   const updatedAccount= await updateDelayDays(account.id);
+   const updatedUser= await User.findByIdAndUpdate({_id:user._id}, {
+                  stripe_seller:updatedAccount
+   },
+   {new: true}).exec();
+   res.json(updatedUser);
+}
+
+exports.getaccountbalance= async (req,res) => {
+
+    const user= await User.findOne({email: req.user.email}).exec();
+
+    try {
+
+        const balance= await stripe.balance.retrieve({
+          stripeAccount: user.stripe_account_id
+        });
+        console.log("BALANCE===", balance);
+        res.json(balance);
+
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
+exports.payoutsettings= async (req,res) => {
+
+    try {
+        const user= await User.findOne({email: req.user.email}).exec();
+        const loginLink= await stripe.accounts.createLoginLink( user.stripe_account_id,
+            { redirect_url: process.env.STRIPE_SETTINGS_REDIRECT_URL}
+            );
+        console.log("LOGIN LINK FOR PAYOUT SETTINGS",loginLink);
+        res.json(loginLink);
+    } catch (err) {
+        console.log("STRIPE PAYOUT SETTINGS ERROR",err);
+    }
 }
