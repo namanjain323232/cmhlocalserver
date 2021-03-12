@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const User = mongoose.model("User");
+const Vendor= mongoose.model("Vendor");
+const Cart= mongoose.model("Cart");
 const Stripe= require("stripe");
 const keys = require("../config/keys");
 const queryString= require("query-string");
@@ -99,4 +101,18 @@ exports.payoutsettings= async (req,res) => {
     } catch (err) {
         console.log("STRIPE PAYOUT SETTINGS ERROR",err);
     }
+}
+
+exports.createpaymentintent= async (req,res) => {
+
+    const user= await User.findOne({email: req.user.email}).exec();
+
+    const {cartTotal}= await Cart.findOne({orderedBy: user._id}).exec();
+
+    const paymentIntent= await stripe.paymentIntents.create({
+        amount:cartTotal * 100,
+        currency: "gbp"
+    });
+    res.send({ clientSecret: paymentIntent.client_secret,
+               cartTotal});
 }

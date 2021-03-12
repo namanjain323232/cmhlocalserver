@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
-
-
 const cartSchema= new mongoose.Schema({
   vendors: [
       {

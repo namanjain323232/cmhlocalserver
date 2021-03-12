@@ -8,7 +8,8 @@ const { authCheck } = require("../middlewares/auth");
 const { createconnectaccount,
         getaccountstatus,
         getaccountbalance,
-        payoutsettings
+        payoutsettings,
+        createpaymentintent
       } = require("../controllers/stripe");
 
 // routes
@@ -16,5 +17,6 @@ router.post("/create-connect-account", authCheck, createconnectaccount);
 router.post("/get-account-status", authCheck, getaccountstatus);
 router.post("/get-account-balance",authCheck, getaccountbalance);
 router.post("/payout-settings",authCheck, payoutsettings);
+router.post("/create-payment-intent", authCheck, createpaymentintent);
 
 module.exports = router;
