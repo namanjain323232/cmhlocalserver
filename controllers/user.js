@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const User = mongoose.model("User");
 const Vendor= mongoose.model("Vendor");
 const Cart= mongoose.model("Cart");
+const Order= mongoose.model("Order");
 
 exports.usercart= async (req,res) => {
    
@@ -82,6 +83,37 @@ exports.saveaddress= async (req,res) => {
     const useraddress= await User.findOneAndUpdate({email: req.user.email}, 
                                                    {address: req.body.address}).exec();
     res.json({ok: true});
+}
+
+exports.createorder= async (req,res) => {
+   
+    console.log(req.body);
+    const {paymentIntent} = req.body.stripeResponse;
+    const user= await User.findOne({email: req.user.email}).exec();
+
+    let {vendors} = await Cart.findOne({orderedBy: user._id}).exec();
+
+    let newOrder= await new Order ({
+        vendors,
+        paymentIntent,
+        orderedBy: user._id
+    }).save();
+    
+    console.log("NEW ORDER SAVED", newOrder);
+    res.json({ ok: true});
+}
+
+exports.orders= async (req,res) => {
+
+    const user= await User.findOne({email: req.user.email}).exec();
+
+    const userOrders= await Order.find({orderedBy: user._id})
+    .populate("vendors.vendor")
+    .exec();
+
+    console.log(userOrders);
+
+    res.json(userOrders);
 }
 
 

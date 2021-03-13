@@ -18,6 +18,7 @@ require("./models/VendorInfo");
 require("./models/Questions");
 require("./models/SubcategoryQuestions");
 require("./models/Cart");
+require("./models/Order");
 const passportConfig=  require("./services/passport");
 
 const app = express();

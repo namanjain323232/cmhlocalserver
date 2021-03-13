@@ -104,15 +104,16 @@ exports.payoutsettings= async (req,res) => {
 }
 
 exports.createpaymentintent= async (req,res) => {
-
+   
     const user= await User.findOne({email: req.user.email}).exec();
 
-    const {cartTotal}= await Cart.findOne({orderedBy: user._id}).exec();
+    const cart= await Cart.findOne({orderedBy: user._id}).exec();
 
     const paymentIntent= await stripe.paymentIntents.create({
-        amount:cartTotal * 100,
+        amount:cart.cartTotal * 100,
         currency: "gbp"
     });
+    const cartTotal= cart.cartTotal;
     res.send({ clientSecret: paymentIntent.client_secret,
                cartTotal});
 }
