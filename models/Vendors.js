@@ -41,6 +41,10 @@ const vendorSchema = new mongoose.Schema ({
          ref: "Subcategory"
       }
    ],
+   image: {
+      data: Buffer,
+      contentType: String,
+    },
    quantity: Number,
    sold: {
       type: Number,

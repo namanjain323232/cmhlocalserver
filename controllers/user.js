@@ -59,9 +59,10 @@ exports.getusercart= async (req,res) =>
     const cartval= await Cart.findOne({orderedBy: user._id})
                              .populate( {
                                 path:"vendors.vendor",                             
-                                populate:[{path: "vendors.vendor.vendorInfoId"}]
-                             }
-                            ).exec();
+                                 populate:[{path: "vendorInfoId"},
+                                           {path: "subcategories"} 
+                                        ]
+                             }).exec(); 
     console.log("Cartval from GETCART", cartval);
      res.json(cartval) ;                 
    }
@@ -108,8 +109,12 @@ exports.orders= async (req,res) => {
     const user= await User.findOne({email: req.user.email}).exec();
 
     const userOrders= await Order.find({orderedBy: user._id})
-    .populate("vendors.vendor")
-    .exec();
+    .populate({ path: "vendors.vendor",
+               populate:[{ path:"vendorInfoId"},
+                        {path: "subcategories"} ]
+              }                                        
+              ).exec();
+
 
     console.log(userOrders);
 
