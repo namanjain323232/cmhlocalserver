@@ -35,7 +35,7 @@ exports.createUpdateUser= async (req,res) =>
     await User.findOne({email: req.user.email} ).exec( (err,user) => {
         if (err) throw new Error(err);
         res.json(user);
-        console.log("user from current user",user);
+        // console.log("user from current user",user);
     });
    };
 

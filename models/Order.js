@@ -12,6 +12,7 @@ const orderSchema= new mongoose.Schema({
          price: Number
       },     
     ],
+    session: {},
     paymentIntent: {},
     orderStatus: {
         type: String,

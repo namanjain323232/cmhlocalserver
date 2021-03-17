@@ -86,30 +86,13 @@ exports.saveaddress= async (req,res) => {
     res.json({ok: true});
 }
 
-exports.createorder= async (req,res) => {
-   
-    console.log(req.body);
-    const {paymentIntent} = req.body.stripeResponse;
-    const user= await User.findOne({email: req.user.email}).exec();
-
-    let {vendors} = await Cart.findOne({orderedBy: user._id}).exec();
-
-    let newOrder= await new Order ({
-        vendors,
-        paymentIntent,
-        orderedBy: user._id
-    }).save();
-    
-    console.log("NEW ORDER SAVED", newOrder);
-    res.json({ ok: true});
-}
 
 exports.orders= async (req,res) => {
 
     const user= await User.findOne({email: req.user.email}).exec();
-
+    console.log("USER from orders get",user);
     const userOrders= await Order.find({orderedBy: user._id})
-    .populate({ path: "vendors.vendor",
+              .populate({ path: "vendors.vendor",
                populate:[{ path:"vendorInfoId"},
                         {path: "subcategories"} ]
               }                                        

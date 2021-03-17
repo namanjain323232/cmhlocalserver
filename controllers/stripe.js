@@ -109,11 +109,92 @@ exports.createpaymentintent= async (req,res) => {
 
     const cart= await Cart.findOne({orderedBy: user._id}).exec();
 
+    const fee= (cart.cartTotal * 20)/100;
+
     const paymentIntent= await stripe.paymentIntents.create({
         amount:cart.cartTotal * 100,
-        currency: "gbp"
+        currency: "gbp" 
     });
     const cartTotal= cart.cartTotal;
     res.send({ clientSecret: paymentIntent.client_secret,
                cartTotal});
+}
+
+exports.stripesessionid= async (req,res) => {
+
+    const user= await User.findOne({email: req.user.email}).exec();
+    
+    const cart= await Cart.findOne({orderedBy: user._id})
+                          .populate({ path: "vendors.vendor",
+                                 populate:[{path: "userId"}]                                 
+                                   }).exec();
+
+    console.log("USER CART======>",cart.vendors[0].vendor.userId.stripe_account_id);
+    const userCart= cart.vendors[0].vendor.userId;
+    console.log("URL:", process.env.STRIPE_SUCCESS_URL);
+    const fee= (cart.cartTotal * 20)/100;
+
+    const session= await stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        line_items: [
+            {
+               name: 'Helper Booking' ,
+               amount: cart.cartTotal * 100,
+               currency: 'gbp',
+               quantity: 1
+            }
+        ],
+        payment_intent_data: {
+            application_fee_amount: fee * 100,
+            transfer_data: {
+                destination: userCart.stripe_account_id
+        }
+    },
+    success_url: process.env.STRIPE_SUCCESS_URL,
+    cancel_url: process.env.STRIPE_CANCEL_URL    
+    });
+
+    await User.findByIdAndUpdate(user._id, {stripeSession:session}).exec();
+
+    console.log("SESSION======>",session);
+    res.send({ sessionId: session.id});
+}
+
+exports.stripesuccess= async (req,res) => {
+   
+    console.log("REQ BODY from STRIPE SUCCESS",req.body);
+   try {    
+    const user= await User.findOne({email: req.user.email}).exec();
+
+    if (!user.stripeSession) return;
+
+    let {vendors} = await Cart.findOne({orderedBy: user._id}).exec();
+
+    const session= await stripe.checkout.sessions.retrieve(user.stripeSession.id);
+    console.log("Session from STRIPE SESSION",session);
+
+    if (session.payment_status === "paid") {
+
+    const orderExists= await Order.findOne({"session.id": session.id}).exec();
+
+    if (orderExists) {
+        res.json({ success: true})
+    } else
+    {
+    const newOrder= await new Order ({
+        vendors,
+        session,
+        orderedBy: user._id
+    }).save();
+
+    await User.findByIdAndUpdate(user._id, {
+               $set: {stripeSession:{}}
+    });
+   }
+  }
+    console.log("NEW ORDER SAVED", newOrder);
+    res.json({ ok: true});
+} catch (err) {
+    console.log("Stripe Success Page error",err);
+}
 }
