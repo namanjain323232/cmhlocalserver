@@ -30,6 +30,34 @@ exports.createUpdateUser= async (req,res) =>
    }          
   };
 
+  exports.createUpdateVendor= async (req,res) =>           
+ { 
+    {
+        const errors= validationResult(req);
+        if (!errors.isEmpty()) {
+           return  res.status(400).json({ errors: errors.array()})
+        }   
+   const user= await User.findOneAndUpdate({email: req.user.email},
+                                                  {name : req.user.email.split("@")[0], 
+                                                   picture: req.user.picture,
+                                                   role:"vendor"
+                                                  },                                                  
+                                                  {new: true});
+    if (user) {
+           console.log("Vendor Updated IN CREATEUPDATE", user);
+            res.json(user);
+    } else {
+        const newVendor= await new User({ email: req.user.email,
+                                        name: req.user.email.split("@")[0],
+                                        picture: req.user.picture,
+                                        role:"vendor"
+                                        }).save();
+               console.log("Vendor added", newVendor);                        
+               res.json(newVendor);           
+             } 
+   }          
+  };
+
   exports.currentUser= async (req,res) => 
   {
     await User.findOne({email: req.user.email} ).exec( (err,user) => {

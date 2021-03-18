@@ -160,7 +160,7 @@ exports.stripesessionid= async (req,res) => {
     res.send({ sessionId: session.id});
 }
 
-exports.stripesuccess= async (req,res) => {
+exports.stripesuccessroute= async (req,res) => {
    
     console.log("REQ BODY from STRIPE SUCCESS",req.body);
    try {    
@@ -187,13 +187,14 @@ exports.stripesuccess= async (req,res) => {
         orderedBy: user._id
     }).save();
 
+    console.log("NEW ORDER", newOrder);
+
     await User.findByIdAndUpdate(user._id, {
                $set: {stripeSession:{}}
     });
    }
   }
-    console.log("NEW ORDER SAVED", newOrder);
-    res.json({ ok: true});
+   res.json({ ok: true});
 } catch (err) {
     console.log("Stripe Success Page error",err);
 }

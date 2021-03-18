@@ -11,7 +11,7 @@ const { createconnectaccount,
         payoutsettings,
         createpaymentintent,
         stripesessionid,
-        stripesuccess
+        stripesuccessroute
       } = require("../controllers/stripe");
 
 // routes
@@ -21,6 +21,6 @@ router.post("/get-account-balance",authCheck, getaccountbalance);
 router.post("/payout-settings",authCheck, payoutsettings);
 router.post("/create-payment-intent", authCheck, createpaymentintent);
 router.post("/stripe-session-id", authCheck, stripesessionid);
-router.post("/stripesuccess", authCheck, stripesuccess);
+router.post("/stripesuccess", authCheck, stripesuccessroute);
 
 module.exports = router;
