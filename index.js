@@ -19,6 +19,7 @@ require("./models/Questions");
 require("./models/SubcategoryQuestions");
 require("./models/Cart");
 require("./models/Order");
+require("./models/Timeslot");
 const passportConfig=  require("./services/passport");
 
 const app = express();
@@ -49,6 +50,7 @@ app.use(
  app.use("/api", require("./routes/cloudinary"));
  app.use("/user", require("./routes/user"));
  app.use("/api", require("./routes/stripe"));
+ app.use("/api", require("./routes/timeslot"));
  //  app.use("/api/util",require("./routes/util"));
 
 
