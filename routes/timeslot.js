@@ -6,10 +6,18 @@ const { authCheck,  adminCheck } = require("../middlewares/auth");
 
 // controller
 const {
-  createslot  
+  createslot,
+  listslots,
+  readslot,
+  editslot,
+  removeslot  
 } = require("../controllers/timeslot");
 
 // routes
 router.post("/timeslot", authCheck,adminCheck, createslot);
+router.get("/timeslots", listslots);
+router.get("/timeslot/:_id", readslot);
+router.put("/timeslot/:_id", authCheck, adminCheck, editslot);
+router.delete("/timeslot/:_id", authCheck, adminCheck, removeslot);
 
 module.exports = router;
