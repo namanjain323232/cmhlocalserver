@@ -61,6 +61,12 @@ type: String,
 maxlength:50,
 trim:true
 },
+areascovered: {
+ type: String,
+ maxlength:100,
+ trim:true,
+ required:true
+},
 website: String
 },
 {timestamps: true}

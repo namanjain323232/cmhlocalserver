@@ -29,7 +29,8 @@ const User = mongoose.model("User");
     }
     
     exports.listvendors= async (req,res) => {
-     try {       
+     try {  
+       console.log("IN list all vendors", req);    
        const vendors = await Vendor.find({})
                                    .populate("userId")
                                    .populate("vendorInfoId")
@@ -50,6 +51,7 @@ const User = mongoose.model("User");
 
     //list vendors by count
     exports.listvendorscount= async (req,res) => {
+      console.log("Req from vendor list count", req.body);  
       try {
          const vendors = await Vendor.find({})
                                     .limit(parseInt(req.params.count))
@@ -92,8 +94,8 @@ const User = mongoose.model("User");
      }
 
     exports.listvendorsuser = async (req,res) => {
-      try { 
-         console.log("Request values from vendor list user",req.params) ;     
+      console.log("Request values from vendor list user",req.params) ;  
+      try {            
          const vendorsusers = await Vendor.find({userId: req.params.userid})                                   
                                     .populate("userId")
                                     .populate("vendorInfoId")
@@ -101,11 +103,12 @@ const User = mongoose.model("User");
                                     .populate("subcategories")
                                     .sort([["createdAt", "desc"]])
                                     .exec();
+       console.log("Vendor USERS",vendorsusers);
         if (!vendorsusers) {
-           return res.status(400).send("No vendors data was found !!!!");
+           return res.json("No vendors");
         }
         return res.json(vendorsusers);
-        console.log(vendorsusers);
+       
       }
       catch (err) {
          console.log(err);

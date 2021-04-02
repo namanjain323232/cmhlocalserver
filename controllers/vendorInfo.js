@@ -38,14 +38,11 @@ const VendorInfo = mongoose.model("VendorInfo");
     exports.readvendorinfo= async (req,res) =>
      { 
      try {
-      vendor = await VendorInfo.findOne({email: req.params.email});
-      if (!vendor) {
-        return res.status(400).send("Vendor Info could not be found !!!!");
-      }
-      res.json(vendor);
+      vendor = await VendorInfo.findOne({email: req.params.email}).exec();
+      return res.json(vendor);      
      }  catch (err) {
             console.log(err);
-            res.status(500).json({message: "Server error at find a vendor info"});
+            res.status(500).json({message: "Server error at find a vendor info",err});
      }        
      };  
 
@@ -57,7 +54,7 @@ const VendorInfo = mongoose.model("VendorInfo");
      vendor = await VendorInfo.findOne({_id:req.body.id});
      console.log("Vendor Info IDDDD",vendor);
      if (!vendor) {
-       return res.status(400).send("Vendor Info could not be found !!!!");
+       return res.json("No Vendor");
      }
      res.json(vendor);
     }  catch (err) {

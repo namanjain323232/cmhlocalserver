@@ -22,11 +22,11 @@ const {
 
 // routes
 router.post("/vendor", authCheck, createvendor);
+router.get("/vendors/:userid", listvendorsuser);
 router.get("/vendors/total", vendorcount);
 router.get("/vendors/:count", listvendorscount);
 router.get("/vendors", listvendors);
 router.get("/vendor/:id", getvendor);
-router.get("/vendors/:userid", listvendorsuser);
 router.put("/vendor/:id", authCheck, vendorCheck, updatevendor);
 router.delete("/vendor/:id", authCheck, removevendor);
 
