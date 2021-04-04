@@ -6,11 +6,10 @@ const Area = mongoose.model("Area");
 const { check, validationResult} = require('express-validator');
 
 // add new category if it does not already exist
-exports.createAreas= async (req,res) => 
-   {
-     try {
-        area =  new Area ({city,county,country});            
-        await area.InsertMany([
+exports.addarea= async (req,res) => 
+ {     
+    await Area.deleteMany({});
+       const areas=([
             {city:"Ampthill",county:"Bedfordshire",country:"Ampthill"},
             {city:"Arlesey",county:"Bedfordshire",country:"Arlesey"},
             {city:"Bedford",county:"Bedfordshire",country:"Bedford"},
@@ -1731,10 +1730,32 @@ exports.createAreas= async (req,res) =>
             {city:"Wrexham",county:"Wrexham",country:"Wrexham"}
             
  ]);
-        res.status(200).json(area);
+
+        await Area.insertMany(areas, (err,res) => {
+          if (err) {
+            console.error(err);
+            res.status(500).send("Failed to save Areas !!!!");
+          } else {
+            console.log("Inserted data", res.insertedCount);
+            return;
+          }
+        })        
                     
-      } catch (err) {
-        console.error(err);
-        res.status(500).send("Failed to save Areas !!!!");
-      }
-   };
+   } ;
+
+   // get all the area records from the database
+   exports.listareas= async (req,res) =>
+   {
+   try {
+     areas =await Area.find({});
+     if (!areas) {
+       return res.status(400).send("No areas were found !!!!");
+     }
+      res.json(areas);
+       } 
+       catch (err) {
+          console.log(err);
+          res.status(500).send("Server errror for areas");
+       }           
+    };     
+   

@@ -20,6 +20,7 @@ require("./models/SubcategoryQuestions");
 require("./models/Cart");
 require("./models/Order");
 require("./models/Timeslot");
+require("./models/Area");
 const passportConfig=  require("./services/passport");
 
 const app = express();
@@ -51,6 +52,7 @@ app.use(
  app.use("/user", require("./routes/user"));
  app.use("/api", require("./routes/stripe"));
  app.use("/api", require("./routes/timeslot"));
+ app.use("/api", require("./routes/area"));
  //  app.use("/api/util",require("./routes/util"));
 
 
