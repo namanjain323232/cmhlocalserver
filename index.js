@@ -15,6 +15,7 @@ require("./models/Categories");
 require("./models/Subcategories");
 require("./models/Vendors");
 require("./models/VendorInfo");
+require("./models/Vendorcalendar");
 require("./models/Questions");
 require("./models/SubcategoryQuestions");
 require("./models/Cart");
@@ -48,6 +49,7 @@ app.use(
  app.use("/api",require("./routes/subcatquestions"));
  app.use("/api",require("./routes/vendor"));
  app.use("/api",require("./routes/vendorinfo"));
+ app.use("/api",require("./routes/vendorcalendar"));
  app.use("/api", require("./routes/cloudinary"));
  app.use("/user", require("./routes/user"));
  app.use("/api", require("./routes/stripe"));

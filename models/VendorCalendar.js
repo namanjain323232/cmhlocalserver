@@ -10,10 +10,13 @@ vendorInfoId: {
  },
 availability:
 [ {start: Date,
-  end:  Date
-},
-  {startSlot: Date,
-   endSlot: Date}
+   end:  Date,
+  timeslots: 
+   [ {type: mongoose.Schema.Types.ObjectId,
+     ref:'Timeslot',
+    required: true} 
+   ]
+    }
 ]
 } ,{timestamps: true}
 )

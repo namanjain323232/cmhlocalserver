@@ -6,8 +6,8 @@ const { adminCheck, authCheck } = require("../middlewares/auth");
 
 // controller
 const {
-  createvendorcal
-//   readvendorinfo,
+  createvendorcal,
+  listvendorcal,
 //   updatevendorinfo,
 //   listvendorsinfo,
 //   removevendorinfo,
@@ -15,8 +15,8 @@ const {
 } = require("../controllers/vendorCalendar");
 
 // routes
-router.post("/vendorcalendar", authCheck, createvendorcal);
-// router.get("/vendorinfo", listvendorsinfo);
+router.post("/vendorcalendar/:id", authCheck, createvendorcal);
+router.get("/vendorcalendar/:id", listvendorcal);
 // router.get("/vendorInfo/:email", readvendorinfo);
 // router.get("/vendorInfo/:id", getvendorinfobyid);
 // router.put("/vendorInfo/:email", authCheck, updatevendorinfo);

@@ -8,7 +8,6 @@ const VendorInfo = mongoose.model("VendorInfo");
 
     exports.createvendorinfo=  async  (req,res) => {        
      try {
-        console.log("In the request body server:", req.body);
         req.body.slug = slugify(req.body.name);
         const newvendor = await new VendorInfo(req.body).save();
         res.json(newvendor);
@@ -22,7 +21,6 @@ const VendorInfo = mongoose.model("VendorInfo");
     exports.listvendorsinfo= async (req,res) => {
      try {
        const vendors = await VendorInfo.find({});
-       console.log("Vendors from backend",vendors);
        if (!vendors) {
           return res.status(400).send("No vendors data was found !!!!");
        }
@@ -52,7 +50,6 @@ const VendorInfo = mongoose.model("VendorInfo");
       console.log("vendor info id",req.body);     
     try {
      vendor = await VendorInfo.findOne({_id:req.body.id});
-     console.log("Vendor Info IDDDD",vendor);
      if (!vendor) {
        return res.json("No Vendor");
      }
