@@ -3,10 +3,15 @@ const Schema = mongoose.Schema;
 
 const vendorCalendarSchema= new mongoose.Schema ({
 
-vendorInfoId: {
+userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref:'VendorInfo',
+    ref:'User',
     required: true
+ },
+ vendorInfoId: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref:'VendorInfo',
+  required: true
  },
 availability:
 [ {start: Date,
