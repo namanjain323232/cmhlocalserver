@@ -170,7 +170,7 @@ const User = mongoose.model("User");
      }
 
      exports.vendorcount= async (req,res) => { 
-        console.log("Req from vendor count", req.data);    
+         
       try {
         const total= await Vendor.find({}).estimatedDocumentCount().exec();
         console.log("Total",total);
@@ -183,7 +183,7 @@ const User = mongoose.model("User");
      
      //allow user to add star rating for the ventor
      exports.vendorRating= async (req,res) => {
-      console.log("Req params", req.params);
+     
       const vendor= await Vendor.findById({_id: req.params.id}).exec();
       const user=  await User.findOne({email: req.user.email}).exec();
       const {star} = req.body;

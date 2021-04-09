@@ -8,12 +8,11 @@ const VendorCal = mongoose.model("VendorCal");
 const VendorInfo= mongoose.model("VendorInfo");
 
 exports.createvendorcal= async (req,res) => {
-  console.log("Values from vendor calendar", req.body);
+  console.log("Values from vendor calendar", req.body, req.params);
   try {
-     const info = await VendorInfo.findOne({userId:req.params.id}).exec();     
-     console.log("VENDOR INFO",info);
-
-     const vendorcal =  new VendorCal ({userId: req.params.id,
+     const info = await VendorInfo.findOne({userId:req.params.userid}).exec();     
+    
+     const vendorcal =  new VendorCal ({userId: req.params.userid,
                                         vendorInfoId: info._id,
                                         availability:  req.body.availability
                                       });   
@@ -29,11 +28,11 @@ exports.createvendorcal= async (req,res) => {
 
 exports.listvendorcal= async (req,res) =>
 {
-  console.log("REQ", req.params)
-try {
-  cal =await VendorCal.find({userId: req.params.id})
+ try {
+  cal =await VendorCal.find({userId: req.params.userid})
                       .populate("vendorInfoId")
                       .populate({path:"availability.timeslots"})
+                      .sort("availability.start")
                       .exec();
   if (!cal) {
     return res.status(400).send("No Vendor Calendar details were found !!!!");
@@ -42,6 +41,37 @@ try {
     } 
     catch (err) {
        console.log(err);
-       res.status(500).send("Server errror for vendor calendar");
+       res.status(500).send("Server error for vendor calendar");
     }           
  };       
+
+ exports.readvendorcal= async (req,res) =>
+{
+ try {
+  cal =await VendorCal.findOne({_id: req.params.id})
+                      .populate("vendorInfoId")
+                      .populate({path:"availability.timeslots"})
+                      .sort("availability.start")
+                      .exec();
+  if (!cal) {
+    return res.status(400).send("No Vendor Calendar details were found !!!!");
+  }
+   res.json(cal);
+  } 
+    catch (err) {
+       console.log(err);
+       res.status(500).send("Server error for vendor calendar find one record");
+    }           
+ };   
+ 
+ exports.updatevendorcal= async (req,res) => {
+
+  try {
+     console.log( req.data);
+  }
+  catch (err) {
+    console.log(err);
+    res.status(500).send("Server error for vendor calendar update");
+  }
+
+ }

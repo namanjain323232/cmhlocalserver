@@ -8,18 +8,18 @@ const { adminCheck, authCheck } = require("../middlewares/auth");
 const {
   createvendorcal,
   listvendorcal,
-//   updatevendorinfo,
-//   listvendorsinfo,
-//   removevendorinfo,
-//   getvendorinfobyid
+  readvendorcal,
+  updatevendorcal,
+//   removevendorinfo
+
 } = require("../controllers/vendorCalendar");
 
 // routes
-router.post("/vendorcalendar/:id", authCheck, createvendorcal);
-router.get("/vendorcalendar/:id", listvendorcal);
-// router.get("/vendorInfo/:email", readvendorinfo);
-// router.get("/vendorInfo/:id", getvendorinfobyid);
-// router.put("/vendorInfo/:email", authCheck, updatevendorinfo);
+router.post("/vendorcalendar/:userid", authCheck, createvendorcal);
+router.get("/vendorcalendar/:userid", listvendorcal);
+router.get("/vendorcalendar/:id", readvendorcal);
+router.put("/vendorcalendar/:id", authCheck, updatevendorcal);
+
 // router.delete("/vendorinfo/:email", authCheck, adminCheck, removevendorinfo);
 
 module.exports = router;
