@@ -17,7 +17,7 @@ const {
 // routes
 router.post("/vendorcalendar/:userid", authCheck, createvendorcal);
 router.get("/vendorcalendar/:userid", listvendorcal);
-router.get("/vendorcalendar/:id", readvendorcal);
+router.get("/vendorcalendar/single/:id", readvendorcal);
 router.put("/vendorcalendar/:id", authCheck, updatevendorcal);
 
 // router.delete("/vendorinfo/:email", authCheck, adminCheck, removevendorinfo);

@@ -29,11 +29,19 @@ exports.createvendorcal= async (req,res) => {
 exports.listvendorcal= async (req,res) =>
 {
  try {
-  cal =await VendorCal.find({userId: req.params.userid})
+
+  const startDate= new Date(Date.now());
+  console.log("DATE", startDate);
+
+  cal =await VendorCal.find({userId: req.params.userid
+                            ,availability: {$elemMatch: {start: {$gte: startDate}}}
+                            })
                       .populate("vendorInfoId")
                       .populate({path:"availability.timeslots"})
                       .sort("availability.start")
                       .exec();
+
+    console.log ("CAL VALUE", cal);
   if (!cal) {
     return res.status(400).send("No Vendor Calendar details were found !!!!");
   }
@@ -53,6 +61,7 @@ exports.listvendorcal= async (req,res) =>
                       .populate({path:"availability.timeslots"})
                       .sort("availability.start")
                       .exec();
+  console.log("CAL",cal);
   if (!cal) {
     return res.status(400).send("No Vendor Calendar details were found !!!!");
   }
