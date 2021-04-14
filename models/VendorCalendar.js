@@ -8,6 +8,11 @@ userId: {
     ref:'User',
     required: true
  },
+ vendorId: {
+   type: mongoose.Schema.Types.ObjectId,
+   ref:'Vendor',
+   required: true
+ },
  vendorInfoId: {
   type: mongoose.Schema.Types.ObjectId,
   ref:'VendorInfo',
@@ -21,7 +26,7 @@ availability:
      ref:'Timeslot',
     required: true} 
    ]
-    }
+  }
 ]
 } ,{timestamps: true}
 )
