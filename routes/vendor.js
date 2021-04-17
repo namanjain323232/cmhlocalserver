@@ -24,7 +24,7 @@ const {
 router.post("/vendor", authCheck, createvendor);
 router.get("/vendors/user/:userid", listvendorsuser);
 router.get("/vendors/total", vendorcount);
-router.get("/vendors/:count", listvendorscount);
+router.get("/vendors/count/:count", listvendorscount);
 router.get("/vendors", listvendors);
 router.get("/vendor/:id", getvendor);
 router.put("/vendor/:id", authCheck, vendorCheck, updatevendor);
