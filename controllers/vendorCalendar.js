@@ -81,6 +81,32 @@ exports.listvendorcal= async (req,res) =>
     }           
  };    
 
+ exports.listvendorcaldate= async (req,res) =>
+{
+ try {
+   console.log("DATE parameters", req.params);
+   const cal = await VendorCal.find({vendorId: req.params.vendorid
+                            ,availability: {$elemMatch: {start: {$gte: req.params.startdate}},
+                                             $elemMatch:{end: {$lte:req.params.enddate}}
+                                             }                                                        
+                            })
+                      .populate("vendorInfoId")
+                      .populate({path:"availability.timeslots"})
+                      .sort("availability.start")
+                      .exec();
+
+    console.log ("CAL VALUE", cal);
+  if (!cal) {
+    return res.status(400).send("No Vendor Calendar details were found !!!!");
+  }
+   res.json(cal);
+    } 
+    catch (err) {
+       console.log(err);
+       res.status(500).send("Server error for vendor calendar");
+    }           
+ };    
+
  exports.readvendorcal= async (req,res) =>
 {
  try {
