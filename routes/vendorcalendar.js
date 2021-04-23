@@ -21,7 +21,7 @@ router.post("/vendorcalendar/:userid", authCheck, createvendorcal);
 router.get("/vendorcalendar/:userid", listvendorcal);
 router.get("/vendorcalendar/vendor/:vendorid", listvendorcalven);
 router.get("/vendorcalendar/single/:id", readvendorcal);
-router.get("/vendorcalendar/vendor/date/:vendorid", listvendorcaldate)
+router.get("/vendorcalendar/vendor/date/:vendorid/:start/:end", listvendorcaldate)
 router.put("/vendorcalendar/:id", authCheck, updatevendorcal);
 
 // router.delete("/vendorinfo/:email", authCheck, adminCheck, removevendorinfo);

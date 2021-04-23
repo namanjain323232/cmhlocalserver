@@ -86,16 +86,16 @@ exports.listvendorcal= async (req,res) =>
  try {
    console.log("DATE parameters", req.params);
    const cal = await VendorCal.find({vendorId: req.params.vendorid
-                            ,availability: {$elemMatch: {start: {$gte: req.params.startdate}},
-                                             $elemMatch:{end: {$lte:req.params.enddate}}
-                                             }                                                        
+                            ,availability: {$elemMatch: {start: {$gte: req.params.start,
+                                                                 $lte:req.params.end}}                                                      
+                                            }                                                        
                             })
                       .populate("vendorInfoId")
                       .populate({path:"availability.timeslots"})
                       .sort("availability.start")
                       .exec();
 
-    console.log ("CAL VALUE", cal);
+    console.log ("CAL VALUE BY DATE RANGE", cal);
   if (!cal) {
     return res.status(400).send("No Vendor Calendar details were found !!!!");
   }
