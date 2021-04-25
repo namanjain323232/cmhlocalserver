@@ -130,7 +130,7 @@ exports.listvendorcal= async (req,res) =>
  exports.updatevendorcal= async (req,res) => {
 
   try {
-     console.log( req.data);
+     console.log("Value from vendor calendar edit",req.data);
   }
   catch (err) {
     console.log(err);
