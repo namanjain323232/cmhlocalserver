@@ -46,8 +46,7 @@ const VendorInfo = mongoose.model("VendorInfo");
 
      // get one vendor info record based on id
     exports.getvendorinfobyid= async (req,res) =>
-    { 
-      console.log("vendor info id",req.body);     
+    {      
     try {
      vendor = await VendorInfo.findOne({_id:req.body.id});
      if (!vendor) {
