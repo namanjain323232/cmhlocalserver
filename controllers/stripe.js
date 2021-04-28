@@ -131,7 +131,7 @@ exports.stripesessionid= async (req,res) => {
 
     console.log("USER CART======>",cart.vendors[0].vendor.userId.stripe_account_id);
     const userCart= cart.vendors[0].vendor.userId;
-    console.log("URL:", process.env.STRIPE_SUCCESS_URL);
+    console.log("URL:",`${process.env.STRIPE_SUCCESS_URL}/${cart.vendors[0].vendor._id}`);
     const fee= (cart.cartTotal * 20)/100;
 
     const session= await stripe.checkout.sessions.create({
@@ -150,7 +150,7 @@ exports.stripesessionid= async (req,res) => {
                 destination: userCart.stripe_account_id
         }
     },
-    success_url: process.env.STRIPE_SUCCESS_URL,
+    success_url: `${process.env.STRIPE_SUCCESS_URL}/${cart.vendors[0].vendor._id}`,
     cancel_url: process.env.STRIPE_CANCEL_URL    
     });
 
@@ -160,15 +160,19 @@ exports.stripesessionid= async (req,res) => {
     res.send({ sessionId: session.id});
 }
 
-exports.stripesuccessroute= async (req,res) => {
-   
-    console.log("REQ BODY from STRIPE SUCCESS",req.body);
+exports.stripesuccessroute= async (req,res) => {   
+    console.log("REQ BODY from STRIPE SUCCESS");
+    const vendor= req.body.vendor;
+    console.log("VENDOR",vendor);
    try {    
     const user= await User.findOne({email: req.user.email}).exec();
+
+    console.log("USER FROM BACKEND",user.stripeSession);
 
     if (!user.stripeSession) return;
 
     let {vendors} = await Cart.findOne({orderedBy: user._id}).exec();
+    console.log(vendors);
 
     const session= await stripe.checkout.sessions.retrieve(user.stripeSession.id);
     console.log("Session from STRIPE SESSION",session);

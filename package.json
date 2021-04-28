@@ -53,6 +53,6 @@
     "redux-thunk": "^2.3.0",
     "request": "^2.88.2",
     "slugify": "^1.4.6",
-    "stripe": "^8.137.0"
+    "stripe": "^8.145.0"
   }
 }
