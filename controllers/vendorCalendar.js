@@ -128,9 +128,16 @@ exports.listvendorcal= async (req,res) =>
  };   
  
  exports.updatevendorcal= async (req,res) => {
-
   try {
-     console.log("Value from vendor calendar edit",req.data);
+     console.log("Value from vendor calendar edit before ",req.body.availability[0].timeslots);
+     const cal=  await VendorCal.findOneAndUpdate({user_id:  req.params._id, 
+                                                 availability: {$elemMatch: {start: {$eq: req.params.start}}}},
+                                                  {$push: {'availability.$.timeslots':  req.body.availability[0].timeslots }} ,
+                                                  {new :true});
+
+    console.log("Values from edit output after",cal);
+    res.status(200).json(cal);
+
   }
   catch (err) {
     console.log(err);
