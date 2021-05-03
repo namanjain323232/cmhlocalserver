@@ -19,8 +19,7 @@ userId: {
   required: true
  },
 availability:
-[ {start: Date,
-   end:  Date,
+[ {start: Date,   
   timeslots: 
    [ {type: mongoose.Schema.Types.ObjectId,
      ref:'Timeslot',

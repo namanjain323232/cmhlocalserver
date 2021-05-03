@@ -8,12 +8,11 @@ const VendorCal = mongoose.model("VendorCal");
 const VendorInfo= mongoose.model("VendorInfo");
 
 exports.createvendorcal= async (req,res) => {
-  console.log("Values from vendor calendar", req.body, req.params);
+  // console.log("Values from vendor calendar", req.body, req.params);
   try {
      const info = await VendorInfo.findOne({userId:req.params.userid}).exec(); 
      const vendor = await Vendor.findOne({userId: req.params.userid}).exec();    
     
-      console.log("Vendor VALUE",vendor);
      const vendorcal =  new VendorCal ({userId: req.params.userid,
                                         vendorId: vendor._id,
                                         vendorInfoId: info._id,                                       
@@ -34,16 +33,15 @@ exports.listvendorcal= async (req,res) =>
  try {
 
   const startDate= new Date(Date.now());
-  console.log("DATE parameters", req.params);
-   const cal = await VendorCal.find({userId: req.params.userid
-                            ,availability: {$elemMatch: {start: {$gte: startDate}}}
+  const cal = await VendorCal.find({userId: req.params.userid
+                            // ,availability: {$elemMatch: {start: {$gte: startDate}}}
                             })
                       .populate("vendorInfoId")
                       .populate({path:"availability.timeslots"})
                       .sort("availability.start")
+                      .sort("availability.timeslots")
                       .exec();
-
-    console.log ("CAL VALUE", cal);
+ 
   if (!cal) {
     return res.status(400).send("No Vendor Calendar details were found !!!!");
   }
@@ -60,16 +58,15 @@ exports.listvendorcal= async (req,res) =>
  try {
 
   const startDate= new Date(Date.now());
-  console.log("DATE parameters", req.params);
-   const cal = await VendorCal.find({vendorId: req.params.vendorid
+  const cal = await VendorCal.find({vendorId: req.params.vendorid
                             ,availability: {$elemMatch: {start: {$gte: startDate}}}
                             })
                       .populate("vendorInfoId")
                       .populate({path:"availability.timeslots"})
                       .sort("availability.start")
+                      .sort("availability.timeslots")
                       .exec();
-
-    console.log ("CAL VALUE", cal);
+    
   if (!cal) {
     return res.status(400).send("No Vendor Calendar details were found !!!!");
   }
@@ -93,6 +90,7 @@ exports.listvendorcal= async (req,res) =>
                       .populate("vendorInfoId")
                       .populate({path:"availability.timeslots"})
                       .sort("availability.start")
+                      .sort("availability.timeslots")
                       .exec();
 
     console.log ("CAL VALUE BY DATE RANGE", cal);
@@ -110,7 +108,7 @@ exports.listvendorcal= async (req,res) =>
  exports.readvendorcal= async (req,res) =>
 {
  try {
-  cal =await VendorCal.findOne({_id: req.params.id})
+  cal =await VendorCal.findOne({userId: req.params.userid})
                       .populate("vendorInfoId")
                       .populate({path:"availability.timeslots"})
                       .sort("availability.start")
@@ -126,18 +124,30 @@ exports.listvendorcal= async (req,res) =>
        res.status(500).send("Server error for vendor calendar find one record");
     }           
  };   
+
+ exports.currentvendorcal= async (req,res) => {
+  console.log("PARAMS from current calendar", req.params);
+  try {   
+    const cal= await VendorCal.findOne({userId: req.params.userid,
+                                        availability: {$elemMatch: {start: {$eq: req.params.start}}}
+                                      });
+    res.json(cal);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server error for vendor calendar update");
+ }
+}
  
  exports.updatevendorcal= async (req,res) => {
   try {
      console.log("Value from vendor calendar edit before ",req.body.availability[0].timeslots);
-     const cal=  await VendorCal.findOneAndUpdate({user_id:  req.params._id, 
+     const cal=  await VendorCal.findOneAndUpdate({userId:  req.params._id, 
                                                  availability: {$elemMatch: {start: {$eq: req.params.start}}}},
                                                   {$push: {'availability.$.timeslots':  req.body.availability[0].timeslots }} ,
                                                   {new :true});
 
     console.log("Values from edit output after",cal);
     res.status(200).json(cal);
-
   }
   catch (err) {
     console.log(err);

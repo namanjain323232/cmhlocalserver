@@ -10,6 +10,7 @@ const {
   listvendorcal,
   listvendorcalven,
   readvendorcal,
+  currentvendorcal,
   listvendorcaldate,
   updatevendorcal,
 //   removevendorinfo
@@ -21,6 +22,7 @@ router.post("/vendorcalendar/:userid", authCheck, createvendorcal);
 router.get("/vendorcalendar/:userid", listvendorcal);
 router.get("/vendorcalendar/vendor/:vendorid", listvendorcalven);
 router.get("/vendorcalendar/single/:id", readvendorcal);
+router.get("/vendorcalendar/existing/:userid/:start", currentvendorcal);
 router.get("/vendorcalendar/vendor/date/:vendorid/:start/:end", listvendorcaldate)
 router.put("/vendorcalendar/:userid/:start", authCheck, updatevendorcal);
 
