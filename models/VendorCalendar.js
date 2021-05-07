@@ -26,7 +26,11 @@ availability:
     required: true} 
    ]
   }
-]
+],
+blockedDate: {
+  type: String,
+  default: "No"
+}
 } ,{timestamps: true}
 )
 

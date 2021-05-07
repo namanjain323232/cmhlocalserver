@@ -6,6 +6,7 @@ const {body, validationResult} = require('express-validator');
 
 const VendorCal = mongoose.model("VendorCal");
 const VendorInfo= mongoose.model("VendorInfo");
+const Timeslots= mongoose.model("Timeslot");
 
 exports.createvendorcal= async (req,res) => {
   // console.log("Values from vendor calendar", req.body, req.params);
@@ -34,7 +35,7 @@ exports.listvendorcal= async (req,res) =>
 
   const startDate= new Date(Date.now());
   const cal = await VendorCal.find({userId: req.params.userid
-                            // ,availability: {$elemMatch: {start: {$gte: startDate}}}
+                             ,availability: {$elemMatch: {start: {$gte: startDate}}}
                             })
                       .populate("vendorInfoId")
                       .populate({path:"availability.timeslots"})
@@ -83,7 +84,7 @@ exports.listvendorcal= async (req,res) =>
  try {
    console.log("DATE parameters", req.params);
    const cal = await VendorCal.find({vendorId: req.params.vendorid
-                            ,availability: {$elemMatch: {start: {$gte: req.params.start,
+                            ,availability: {$elemMatch: {start: {$gte: req.params.start + 1,
                                                                  $lte:req.params.end}}                                                      
                                             }                                                        
                             })
@@ -154,4 +155,32 @@ exports.listvendorcal= async (req,res) =>
     res.status(500).send("Server error for vendor calendar update");
   }
 
+ }
+
+ exports.createbulkbooking= async (req,res) => {
+  console.log("Bulk backend", req.body);
+  try {
+    const info = await VendorInfo.findOne({userId:req.params.userid}).exec(); 
+    const vendor = await Vendor.findOne({userId: req.params.userid}).exec();    
+    const timeslots= await Timeslots.find({});
+
+    const vendorcal =  new VendorCal ({userId: req.params.userid,
+                                       vendorId: vendor._id,
+                                       vendorInfoId: info._id, 
+                                       blockedDate: "Yes" ,                                     
+                                       availability:  {
+                                            start: req.body.start,
+                                            timeslots: timeslots
+                                       }
+                                      });
+   
+    console.log("In bulk vendor booking",vendorcal);
+    await vendorcal.save();
+    res.json(vendorcal);
+
+  }
+  catch (err) {
+    console.log(err);
+    res.status(500).send("Server error for bulk vendor booking");
+  }
  }
