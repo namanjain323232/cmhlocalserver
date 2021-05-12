@@ -84,7 +84,7 @@ exports.listvendorcal= async (req,res) =>
  try {
    console.log("DATE parameters", req.params);
    const cal = await VendorCal.find({vendorId: req.params.vendorid
-                            ,availability: {$elemMatch: {start: {$gte: req.params.start + 1,
+                            ,availability: {$elemMatch: {start: {$gte: req.params.start,
                                                                  $lte:req.params.end}}                                                      
                                             }                                                        
                             })
@@ -127,12 +127,15 @@ exports.listvendorcal= async (req,res) =>
  };   
 
  exports.currentvendorcal= async (req,res) => {
-  console.log("PARAMS from current calendar", req.params);
+  console.log("PARAMS from current calendar",req.params.start,new Date(new Date(req.params.start).setHours(23,59,59)));
   try {   
     const cal= await VendorCal.findOne({userId: req.params.userid,
-                                        availability: {$elemMatch: {start: {$eq: req.params.start}}}
+                                     availability: {$elemMatch: {start: {$gte: new Date(new Date(req.params.start).setHours(00,00,00)),
+                                                                         $lt: new Date(new Date(req.params.start).setHours(23,59,59))}}}
                                       });
+                                     
     res.json(cal);
+   console.log("OUTPUT current calendar",cal);
   } catch (err) {
     console.log(err);
     res.status(500).send("Server error for vendor calendar update");
@@ -181,6 +184,33 @@ exports.listvendorcal= async (req,res) =>
   }
   catch (err) {
     console.log(err);
-    res.status(500).send("Server error for bulk vendor booking");
+    res.status(500).send("Server error for bulk vendor booking",err.message);
+  }
+ }
+
+ exports.createbulkavail= async (req,res) => {
+    console.log("Bulk avail backend", req.body);
+  try {
+
+    const info = await VendorInfo.findOne({userId:req.params.userid}).exec(); 
+    const vendor = await Vendor.findOne({userId: req.params.userid}).exec();    
+    const timeslots= await Timeslots.find({});
+
+    const vendorcal= new VendorCal ({ userId: req.params.userid,
+                                      vendorId: vendor._id,
+                                      vendorInfoId: info._id,
+                                      blockedDate: "No",
+                                      availability: {
+                                        start: req.body.start,
+                                        timeslots: req.body.timeslots
+                                      }
+        });
+      console.log("IN Bulk vendor availability",vendorcal);
+      await vendorcal.save();
+      res.json(vendorcal);
+  }
+  catch (err) {
+     console.log(err);
+     res.status(500).send("Server error for bulk vendor availability", err.message);
   }
  }

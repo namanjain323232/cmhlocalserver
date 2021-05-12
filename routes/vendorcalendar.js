@@ -13,7 +13,8 @@ const {
   currentvendorcal,
   listvendorcaldate,
   updatevendorcal,
-  createbulkbooking
+  createbulkbooking,
+  createbulkavail
 //   removevendorinfo
 
 } = require("../controllers/vendorCalendar");
@@ -28,6 +29,7 @@ router.get("/vendorcalendar/vendor/date/:vendorid/:start/:end", listvendorcaldat
 router.put("/vendorcalendar/:userid/:start", authCheck, updatevendorcal);
 
 router.post("/vendorcalendar/bulkbook/:userid", authCheck, createbulkbooking);
+router.post("/vendorcalendar/bulkavail/:userid",authCheck, createbulkavail);
 // router.delete("/vendorinfo/:email", authCheck, adminCheck, removevendorinfo);
 
 module.exports = router;
