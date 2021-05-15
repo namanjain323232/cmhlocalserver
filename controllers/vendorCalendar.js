@@ -109,7 +109,7 @@ exports.listvendorcal= async (req,res) =>
  exports.readvendorcal= async (req,res) =>
 {
  try {
-  cal =await VendorCal.findOne({userId: req.params.userid})
+  cal =await VendorCal.findOne({_id: req.params.id})
                       .populate("vendorInfoId")
                       .populate({path:"availability.timeslots"})
                       .sort("availability.start")
@@ -144,8 +144,8 @@ exports.listvendorcal= async (req,res) =>
  
  exports.updatevendorcal= async (req,res) => {
   try {
-     console.log("Value from vendor calendar edit before ",req.body.availability[0].timeslots);
-     const cal=  await VendorCal.findOneAndUpdate({userId:  req.params._id, 
+     console.log("Value from vendor calendar edit before ",req.body.availability[0].timeslots, req.params);
+     const cal=  await VendorCal.findOneAndUpdate({userId:  req.params.userid, 
                                                  availability: {$elemMatch: {start: {$eq: req.params.start}}}},
                                                   {$push: {'availability.$.timeslots':  req.body.availability[0].timeslots }} ,
                                                   {new :true});

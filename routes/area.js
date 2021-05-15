@@ -7,13 +7,17 @@ const { authCheck, adminCheck } = require("../middlewares/auth");
 // controller
 const {
   addarea,
-  listareas
+  listareas,
+  listcities,
+  listcounties
 } = require("../controllers/area");
 
 console.log("In the area routes");
 // routes
 router.get("/areas", authCheck, adminCheck, addarea);
 router.get("/areas/list", listareas);
+router.get("/areas/listcities",listcities);
+router.get("/areas/listcounties/:city",listcounties);
 
 
 module.exports = router;

@@ -10,7 +10,7 @@ exports.addarea= async (req,res) =>
  {     
     await Area.deleteMany({});
        const areas=([
-            {city:"Ampthill",county:"Bedfordshire",country:"Ampthill"},
+            {city:"Ampthill",county:"Bedfordshire",country:"England"},
             {city:"Arlesey",county:"Bedfordshire",country:"Arlesey"},
             {city:"Bedford",county:"Bedfordshire",country:"Bedford"},
             {city:"Biggleswade",county:"Bedfordshire",country:"Biggleswade"},
@@ -1734,7 +1734,7 @@ exports.addarea= async (req,res) =>
         await Area.insertMany(areas, (err,res) => {
           if (err) {
             console.error(err);
-            res.status(500).send("Failed to save Areas !!!!");
+            res.status(500).send("Failed to add new Areas !!!!",err);
           } else {
             console.log("Inserted data", res.insertedCount);
             return;
@@ -1759,3 +1759,37 @@ exports.addarea= async (req,res) =>
        }           
     };     
    
+
+    //get list of all cities
+    exports.listcities= async (req,res) => 
+    {
+      try {
+        cities= await Area.find({}).select("city").distinct("city");
+        if (!cities) {
+          return res.status(400).send("No cities were found");
+        }
+      res.json(cities)
+      }
+      catch (err) {
+        console.log(err);
+        res.status(500).send("Server error in fetching cities",err.message);
+      }
+    }
+
+    //get list of all counties
+    exports.listcounties= async (req,res) => 
+    {
+      console.log("REQ",req.body, req.params);
+      try {
+        counties= await Area.find({city: req.params.city}).select("county").sort({county:1});
+        if (!counties) {
+          return res.status(400).send("No counties were found");
+        }
+      res.json(counties);
+      console.log(counties);
+      }
+      catch (err) {
+        console.log(err);
+        res.status(500).send("Server error in fetching counties",err.message);
+      }
+    }
