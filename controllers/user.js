@@ -5,16 +5,21 @@ const User = mongoose.model("User");
 const Vendor= mongoose.model("Vendor");
 const Cart= mongoose.model("Cart");
 const Order= mongoose.model("Order");
+const Timeslot = mongoose.model("Timeslot");
 
 exports.usercart= async (req,res) => {
    
     const {cart} = req.body;
-    console.log("Request from user cart",req.body);
-
+    console.log("Request from user cart",req.body.cart[0].bookingSlots[0].tstimeslot);
+    // console.log("Request from user cart",new Date(req.body.cart[0].bookingDate).setHours(23,59,59));
+    // const year= splice(req.body.cart[0].bookingDate,1,4);
+    console.log("Request from user cart year",console.log(new Date(req.body.cart[0].bookingDate)));
     let vendors= [];
 
     const user= await User.findOne({email: req.user.email}).exec();
 
+
+   
     //check if the cart already exists for this user
 
     let existingCart= await Cart.findOne({orderedBy: user._id}).exec();
@@ -46,9 +51,13 @@ exports.usercart= async (req,res) => {
     let newCart= await new Cart({
         vendors,
         cartTotal,
-        orderedBy:user._id
+        orderedBy:user._id,
+        timeslots: [ req.body.cart[0].bookingSlots[0].tstimeslot._id,
+                           req.body.cart[0].bookingSlots[0].tstimeslot.startSlot,
+                           req.body.cart[0].bookingSlots[0].tstimeslot.endtSlot
+                         ],
+        bookingDate: req.body.cart[0].bookingDate                    
     }).save();
-
      res.json({ok: true})
 }
 
