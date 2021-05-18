@@ -33,7 +33,7 @@ exports.listvendorcal= async (req,res) =>
 {
  try {
 
-  const startDate= new Date(Date.now());
+  const startDate = new Date(new Date(Date.now()).setHours(00,00,00));
   const cal = await VendorCal.find({userId: req.params.userid
                              ,availability: {$elemMatch: {start: {$gte: startDate}}}
                             })
@@ -83,8 +83,9 @@ exports.listvendorcal= async (req,res) =>
 {
  try {
    console.log("DATE parameters", req.params);
+   const startDate = new Date(new Date(req.params.start).setHours(00,00,00));
    const cal = await VendorCal.find({vendorId: req.params.vendorid
-                            ,availability: {$elemMatch: {start: {$gte: req.params.start,
+                            ,availability: {$elemMatch: {start: {$gte: startDate,
                                                                  $lte:req.params.end}}                                                      
                                             }                                                        
                             })
@@ -146,7 +147,11 @@ exports.listvendorcal= async (req,res) =>
   try {
      console.log("Value from vendor calendar edit before ",req.body.availability[0].timeslots, req.params);
      const cal=  await VendorCal.findOneAndUpdate({userId:  req.params.userid, 
-                                                 availability: {$elemMatch: {start: {$eq: req.params.start}}}},
+                                                 availability: 
+                                                      {$elemMatch: {start: {
+                                                          $gte: new Date(new Date(req.params.start).setHours(00,00,00)),
+                                                          $lt: new Date(new Date(req.params.start).setHours(23,59,59))}}
+                                                      }},
                                                   {$push: {'availability.$.timeslots':  req.body.availability[0].timeslots }} ,
                                                   {new :true});
 
