@@ -17,14 +17,13 @@ const cartSchema= new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
    },
-     timeslots:        
-         [
-         {_id: String,
-          startSlot:String,
-          endSlot:String      
-         }        
-         ],  
-   bookingDate:Date
+   timeslots: 
+   [ {type: mongoose.Schema.Types.ObjectId,
+     ref:'Timeslot',
+    required: true} 
+   ],       
+   bookingDate:String
+   
 },{timestamps: true}
 );
 

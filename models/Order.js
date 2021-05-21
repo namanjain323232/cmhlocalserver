@@ -27,16 +27,13 @@ const orderSchema= new mongoose.Schema({
     orderedBy:{ type: mongoose.Schema.Types.ObjectId,
                 ref: 'User' 
     } ,
-    booking: [
-        { 
-          timeslots: [
-            {type: mongoose.Schema.Types.ObjectId,
-             ref: "Timeslot"
-            }        
-          ],
-          bookingDate: Date
-        }
-      ] 
+    timeslots: 
+     [ {type: mongoose.Schema.Types.ObjectId,
+     ref:'Timeslot',
+    required: true} 
+    ],       
+   bookingDate:String
+   
 }, {timestamp: true});
 
 

@@ -171,8 +171,9 @@ exports.stripesuccessroute= async (req,res) => {
 
     if (!user.stripeSession) return;
 
-    let {vendors} = await Cart.findOne({orderedBy: user._id}).exec();
-    console.log(vendors);
+    let {vendors,bookingDate, timeslots} = await Cart.findOne({orderedBy: user._id}).exec();
+    console.log("CART FROM ORDERS",cart, cart.vendor);
+
 
     const session= await stripe.checkout.sessions.retrieve(user.stripeSession.id);
     console.log("Session from STRIPE SESSION",session);
@@ -188,6 +189,8 @@ exports.stripesuccessroute= async (req,res) => {
     const newOrder= await new Order ({
         vendors,
         session,
+        bookingDate,
+        timeslots,
         orderedBy: user._id
     }).save();
 
