@@ -6,7 +6,7 @@ const admin =  require("../firebase");
 exports.authCheck = async (req,res,next) => {
     // console.log("authtoken from AUTHCHECK", req.headers.authtoken)
      try {
-       console.log("From middleware",req.header.authtoken);
+       console.log("From middleware",req.headers.authtoken);
        const firebaseUser= await admin.auth()
                                       .verifyIdToken(req.headers.authtoken);
         req.user= firebaseUser;     
