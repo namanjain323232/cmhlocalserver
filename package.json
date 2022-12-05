@@ -7,6 +7,7 @@
     "start": "nodemon index.js",
     "server": "nodemon index.js ",
     "client": "npm run start --prefix ../client",
+    "prod": "node server",
     "dev": "concurrently \"npm run server\"  \"npm run client\""
   },
   "author": "",
