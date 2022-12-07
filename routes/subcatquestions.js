@@ -11,7 +11,7 @@ const {
   updatesubcatquestions,
   removesubcatquestions,
   listsubcatquestions
-} = require("../controllers/subcatquestions");
+} = require("../controllers/subcatQuestions");
 
 // routes
 // router.post("/subcategory", authCheck, adminCheck, createsubcatquestions);
