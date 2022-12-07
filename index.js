@@ -1,13 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cookieSession = require("cookie-session");
-const config = require("config");
 const passport = require("passport");
 const morgan= require("morgan");
 const bodyParser = require('body-parser');
-const { readdirSync } = require("fs");
-const keys = require("./config/keys");
 
+const keys = require("./config/keys");
 require("dotenv").config({ "path": ".env" });
 
 require("./models/User");
