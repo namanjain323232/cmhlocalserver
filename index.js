@@ -5,7 +5,7 @@ const passport = require("passport");
 const morgan= require("morgan");
 const bodyParser = require('body-parser');
 
-const keys = require("./common/config/keys");
+const keys = require("./common/config/env.config");
 require("dotenv").config({ "path": ".env" });
 
 require("./models/User");

@@ -1,5 +1,5 @@
 const cloudinary = require("cloudinary");
-const keys = require("../common/config/keys");
+const keys = require("../common/config/env.config");
 
 //config
 cloudinary.config({ 

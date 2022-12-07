@@ -5,7 +5,7 @@ const User = mongoose.model("User");
 const Vendor= mongoose.model("Vendor");
 const Cart= mongoose.model("Cart");
 const Stripe= require("stripe");
-const keys = require("../common/config/keys");
+const keys = require("../common/config/env.config");
 const queryString= require("query-string");
 
 const stripe= Stripe(keys.STRIPE_SECRET_KEY)
