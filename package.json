@@ -4,8 +4,8 @@
   "description": "CMH dev server",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "server": "nodemon index.js ",
+    "start": "set NODE_ENV=development&& nodemon index.js",
+    "server": "set NODE_ENV=production&& nodemon index.js",
     "client": "npm run start --prefix ../client",
     "prod": "node server",
     "dev": "concurrently \"npm run server\"  \"npm run client\""
