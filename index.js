@@ -13,7 +13,7 @@ require("./models/Categories");
 require("./models/Subcategories");
 require("./models/Vendors");
 require("./models/VendorInfo");
-require("./models/Vendorcalendar");
+require("./models/VendorCalendar");
 require("./models/Questions");
 require("./models/SubcategoryQuestions");
 require("./models/Cart");
