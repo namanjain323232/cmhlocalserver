@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const { readdirSync } = require("fs");
 const keys = require("./config/keys");
 
-require('dotenv').config();
+require("dotenv").config({ "path": ".env" });
 
 require("./models/User");
 require("./models/Categories");
