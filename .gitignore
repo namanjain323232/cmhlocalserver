@@ -1,5 +1,6 @@
 /node_modules
 /config/keys.js
+/common/config/keys.js
 /config/firebaseServiceAccountKey.json
 keys.js
 .env

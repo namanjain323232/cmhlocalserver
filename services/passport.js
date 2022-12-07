@@ -2,7 +2,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
 const mongoose = require("mongoose");
 const passport = require("passport");
-const keys = require("../config/keys");
+const keys = require("../common/config/keys");
 
 //single argument means we are trying to get data from the model.
 const User = mongoose.model("User");
