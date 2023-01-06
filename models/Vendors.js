@@ -55,6 +55,7 @@ const vendorSchema = new mongoose.Schema(
     ratings: [
       {
         star: Number,
+        name: String,
         postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
         review: String,
       },

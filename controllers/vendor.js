@@ -200,7 +200,14 @@ exports.vendorRating = async (req, res) => {
     let newRating = await Vendor.findByIdAndUpdate(
       { _id: vendor._id },
       {
-        $push: { ratings: { star: star, review: review, postedBy: user._id } },
+        $push: {
+          ratings: {
+            star: star,
+            review: review,
+            name: user.name,
+            postedBy: user._id,
+          },
+        },
       },
       { new: true }
     ).exec();
