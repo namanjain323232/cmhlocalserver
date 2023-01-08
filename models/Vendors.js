@@ -1,65 +1,67 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const vendorSchema = new mongoose.Schema ({
-   userId: {
+const vendorSchema = new mongoose.Schema(
+  {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User', 
-      required: true
-     },
-     vendorInfoId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref:'VendorInfo',
-        required: true
-     },
-     slug: {
+      ref: "User",
+      required: true,
+    },
+    vendorInfoId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "VendorInfo",
+      required: true,
+    },
+    slug: {
       type: String,
       unique: true,
-      lowercase:true,
-      index:true      
-    },     
-  description: {
-        type: String,
-        maxlength:2000,
-        text:true
-   }, 
-   price: {
-      type: Number,
-      maxlength:32,
-      required:true
-   },
-   pricetype: {
+      lowercase: true,
+      index: true,
+    },
+    description: {
       type: String,
-      enum: ["Hourly", "Job", "Daily"]
-   },
-   category:{
-      type:  mongoose.Schema.Types.ObjectId,
-      ref: "Category"
-   },
-   subcategories: [
-      { type:  mongoose.Schema.Types.ObjectId,
-         ref: "Subcategory"
-      }
-   ],
-   image: {
+      maxlength: 2000,
+      text: true,
+    },
+    price: {
+      type: Number,
+      maxlength: 32,
+      required: true,
+    },
+    pricetype: {
+      type: String,
+      enum: ["Hourly", "Job", "Daily"],
+    },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+    },
+    subcategories: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "Subcategory" },
+    ],
+    image: {
       data: Buffer,
       contentType: String,
     },
-   quantity: Number,
-   sold: {
+    quantity: Number,
+    sold: {
       type: Number,
-      default: 0
-   },
-   images: {
-      type: Array
-   },
-   ratings: [{
-      star: Number,
-      postedBy:  {type: mongoose.Schema.Types.ObjectId,
-                  ref: 'User'}
-   }],
-},
-{timestamps: true}
+      default: 0,
+    },
+    images: {
+      type: Array,
+    },
+    ratings: [
+      {
+        star: Number,
+        name: String,
+        postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        review: String,
+      },
+    ],
+  },
+  { timestamps: true }
 );
 
-mongoose.exports= Vendor = mongoose.model("Vendor", vendorSchema);
+mongoose.exports = Vendor = mongoose.model("Vendor", vendorSchema);

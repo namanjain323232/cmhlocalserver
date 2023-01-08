@@ -9,7 +9,8 @@ exports.authCheck = async (req,res,next) => {
        console.log("From middleware",req.headers.authtoken);
        const firebaseUser= await admin.auth()
                                       .verifyIdToken(req.headers.authtoken);
-        req.user= firebaseUser;     
+        req.user= firebaseUser;
+        console.log(req.user);     
         next();
     }
     catch (err) {
