@@ -5,10 +5,12 @@ const router = express.Router();
 const { authCheck, adminCheck } = require("../middlewares/auth");
 
 // controller
-const { createUpdateUser,
-        createUpdateVendor,
-        currentUser,
-        adminUser } = require("../controllers/auth");
+const {
+  createUpdateUser,
+  createUpdateVendor,
+  currentUser,
+  adminUser,
+} = require("../controllers/auth");
 
 router.post("/createupdateuser", authCheck, createUpdateUser);
 router.post("/createupdatevendor", authCheck, createUpdateVendor);
