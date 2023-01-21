@@ -332,6 +332,7 @@ const handleSub = async (req, res, sub) => {
 
 exports.searchfilters = async (req, res) => {
   const { query, price, category, stars, sub, areas } = req.body;
+  console.log(sub, "hsubbbbbbbbbbbbbb");
   var qry = {};
   console.log(req.body, "abc");
   if (query) {
