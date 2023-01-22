@@ -331,11 +331,15 @@ const handleSub = async (req, res, sub) => {
 };
 
 exports.searchfilters = async (req, res) => {
-  const { query, price, category, stars, sub } = req.body;
+  const { query, price, category, stars, sub, areas } = req.body;
+  console.log(sub, "hsubbbbbbbbbbbbbb");
   var qry = {};
-  console.log(req.body);
+  console.log(req.body, "abc");
   if (query) {
     qry.$text = { $search: query };
+  }
+  if (areas && areas.length > 0) {
+    qry.areasCovered = { $in: areas };
   }
   if (price) {
     qry.price = {

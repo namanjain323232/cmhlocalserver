@@ -58,6 +58,7 @@ const vendorSchema = new mongoose.Schema(
         name: String,
         postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
         review: String,
+        createdAt: { type: Date, default: Date.now },
       },
     ],
   },
