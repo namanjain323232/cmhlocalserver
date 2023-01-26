@@ -139,6 +139,8 @@ exports.stripesessionid = async (req, res) => {
       {
         name: "Helper Booking",
         amount: cart.cartTotal * 100,
+
+        description: "Please do not back button while making Payment",
         currency: "gbp",
         quantity: 1,
       },
