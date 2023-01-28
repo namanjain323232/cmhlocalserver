@@ -37,13 +37,25 @@ exports.usercart = async (req, res) => {
   }
 
   {
-    console.log("Before insert", req.body.cart[0].bookingSlots[0]);
+    console.log("Before insert", req.body.cart[0].bookingSlots);
   }
+  req.body.cart[0].bookingSlots.map((b) => {
+    console.log(b);
+  });
+  let timeslotsArr = [];
+
+  req.body.cart[0].bookingSlots.map((b) => {
+    timeslotsArr.push({
+      start: b.tstimeslot[0].startSlot,
+      end: b.tstimeslot[0].endSlot,
+    });
+  });
+  console.log(timeslotsArr, "sjdbsjdbsfjsndjabfkjs");
   let newCart = await new Cart({
     vendors,
     cartTotal,
     orderedBy: user._id,
-    timeslots: req.body.cart[0].bookingSlots[0].tstimeslot,
+    timeslotsSE: timeslotsArr,
     bookingDate: new Date(req.body.cart[0].bookingDate),
   }).save();
   res.json({ ok: true });
@@ -59,7 +71,7 @@ exports.getusercart = async (req, res) => {
       })
       .exec();
 
-    console.log("Cartval from GETCART", cartval);
+    console.log("Cartval from GETCART jhdjshdsjdhksdk", cartval);
     res.json(cartval);
   } catch (err) {
     console.log(err);
