@@ -112,3 +112,14 @@ exports.contact = async (req, res) => {
   let newContact = await Contact.create(req.body);
   res.json(newContact);
 };
+
+exports.getquerieslist = async (req, res) => {
+  let querieslist = await Contact.find({ unread: true });
+  res.json(querieslist);
+};
+
+exports.markasread = async (req, res) => {
+  let query = await Contact.findByIdAndUpdate(req.params.id, { unread: false });
+  let querieslist = await Contact.find({ unread: true });
+  res.json(querieslist);
+};
