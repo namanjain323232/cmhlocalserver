@@ -16,6 +16,7 @@ const contactSchema = new schema(
       type: String,
       required: true,
     },
+    unread: { type: Boolean, default: true },
   },
   { timestamps: true }
 );

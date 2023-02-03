@@ -64,6 +64,7 @@ exports.listvendorscount = async (req, res) => {
   console.log("Req from vendor list count", req.body);
   try {
     const vendors = await Vendor.find({})
+      .sort("price")
       .limit(parseInt(req.params.count))
       .populate("vendorInfoId")
       .populate("category")
@@ -272,6 +273,7 @@ exports.listrelatedvendors = async (req, res) => {
     .populate("category")
     .populate("subcategories")
     .populate("postedBy")
+    .populate("vendorInfoId")
     .exec();
 
   res.json(related);
@@ -386,6 +388,7 @@ exports.searchfilters = async (req, res) => {
         qry._id = aggregates;
         console.log(qry);
         Vendor.find(qry)
+          .sort("price")
           .populate("vendorInfoId")
           .populate("category")
           .populate("subcategories")
@@ -398,6 +401,7 @@ exports.searchfilters = async (req, res) => {
     } else {
       console.log(qry);
       const vendors = await Vendor.find(qry)
+        .sort("price")
         .populate("vendorInfoId")
         .populate("category")
         .populate("subcategories")

@@ -12,6 +12,8 @@ const {
   saveaddress,
   orders,
   contact,
+  getquerieslist,
+  markasread,
 } = require("../controllers/user");
 
 // routes
@@ -21,6 +23,8 @@ router.delete("/cart", authCheck, emptycart);
 router.post("/address", authCheck, saveaddress);
 router.get("/order", authCheck, orders);
 
+router.get("/querieslist", getquerieslist);
+router.put("/markasread/:id", markasread);
 router.post("/contact", contact);
 
 module.exports = router;

@@ -139,6 +139,8 @@ exports.stripesessionid = async (req, res) => {
       {
         name: "Helper Booking",
         amount: cart.cartTotal * 100,
+
+        description: "Please do not back button while making Payment",
         currency: "gbp",
         quantity: 1,
       },
@@ -170,10 +172,10 @@ exports.stripesuccessroute = async (req, res) => {
 
     if (!user.stripeSession) return;
 
-    let { vendors, bookingDate, timeslots } = await Cart.findOne({
+    let { vendors, bookingDate, timeslotsSE } = await Cart.findOne({
       orderedBy: user._id,
     }).exec();
-    // console.log("CART FROM ORDERS",cart, cart.vendor);
+    // console.log("CART FROM ORDERS", vendors, bookingDate, timeslotsSE);
 
     const session = await stripe.checkout.sessions.retrieve(
       user.stripeSession.id
@@ -192,7 +194,7 @@ exports.stripesuccessroute = async (req, res) => {
           vendors,
           session,
           bookingDate,
-          timeslots,
+          timeslotsSE,
           orderedBy: user._id,
         }).save();
 
