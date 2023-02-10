@@ -11,12 +11,12 @@ const { check, validationResult} = require('express-validator');
 exports.createcategory= async (req,res) => 
    {
      try {
-      const {name, imgURL } = req.body;
+      const {name, imgURL, hide } = req.body;
       let category = await Category.findOne({name});
       if (category) {
         return res.status(400).json({ errors:[ {msg: 'Category already exists !!!'}] })
        }  
-        category =  new Category ({name,imgURL, slug: slugify(name)});            
+        category =  new Category ({name,imgURL,hide, slug: slugify(name)});            
         await category.save();
         res.status(200).json(category);
                     
@@ -63,9 +63,9 @@ exports.createcategory= async (req,res) =>
      exports.updatecategory= async (req,res) =>      
      {
        try {
-        const {name, imgURL } = req.body;
+        const {name, imgURL,hide } = req.body;
         const category=  await Category.findOneAndUpdate({slug:  req.params.slug},
-                                                          {name,imgURL, slug: slugify(name)},
+                                                          {name,imgURL, hide,slug: slugify(name)},
                                                           {new :true});
         res.status(200).json(category);
       } catch (err)   {

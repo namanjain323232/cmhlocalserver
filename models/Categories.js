@@ -12,6 +12,10 @@ const categorySchema = new mongoose.Schema({
     imgURL: {
       type: String,
       required:true },
+    hide: {
+      type: String,
+      enum: ["True", "False"],
+      required:true },
     slug: {
       type: String,
       unique: true,
