@@ -24,6 +24,8 @@ const Vendor= mongoose.model("Vendor");
      const  subcategory = new Subcategory (
             {name: req.body.name,
             slug: slugify(req.body.name),
+            hide: req.body.hide,
+            type: req.body.type,
             category:categoryval._id}
      );        
          await subcategory.save();

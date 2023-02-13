@@ -14,7 +14,7 @@ const categorySchema = new mongoose.Schema({
       required:true },
     hide: {
       type: String,
-      enum: ["True", "False"],
+      enum: ["Yes", "No"],
       required:true },
     slug: {
       type: String,
