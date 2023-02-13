@@ -14,22 +14,26 @@ const {
   listvendorcaldate,
   updatevendorcal,
   createbulkbooking,
-  createbulkavail
-//   removevendorinfo
-
+  createbulkavail,
+  getvendororders,
+  //   removevendorinfo
 } = require("../controllers/vendorCalendar");
 
 // routes
+router.get("/vendorcalendar/booking/:vendorid", getvendororders);
 router.post("/vendorcalendar/:userid", authCheck, createvendorcal);
 router.get("/vendorcalendar/:userid", listvendorcal);
 router.get("/vendorcalendar/vendor/:vendorid", listvendorcalven);
 router.get("/vendorcalendar/single/:id", readvendorcal);
 router.get("/vendorcalendar/existing/:userid/:start", currentvendorcal);
-router.get("/vendorcalendar/vendor/date/:vendorid/:start/:end", listvendorcaldate);
+router.get(
+  "/vendorcalendar/vendor/date/:vendorid/:start/:end",
+  listvendorcaldate
+);
 router.put("/vendorcalendar/:userid/:start", authCheck, updatevendorcal);
 
 router.post("/vendorcalendar/bulkbook/:userid", authCheck, createbulkbooking);
-router.post("/vendorcalendar/bulkavail/:userid",authCheck, createbulkavail);
+router.post("/vendorcalendar/bulkavail/:userid", authCheck, createbulkavail);
 // router.delete("/vendorinfo/:email", authCheck, adminCheck, removevendorinfo);
 
 module.exports = router;

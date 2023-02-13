@@ -14,6 +14,7 @@ const {
   contact,
   getquerieslist,
   markasread,
+  markascomplete,
 } = require("../controllers/user");
 
 // routes
@@ -25,6 +26,7 @@ router.get("/order", authCheck, orders);
 
 router.get("/querieslist", getquerieslist);
 router.put("/markasread/:id", markasread);
+router.put("/markascomplete/:id", markascomplete);
 router.post("/contact", contact);
 
 module.exports = router;

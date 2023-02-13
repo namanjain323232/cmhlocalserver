@@ -123,3 +123,8 @@ exports.markasread = async (req, res) => {
   let querieslist = await Contact.find({ unread: true });
   res.json(querieslist);
 };
+exports.markascomplete = async (req, res) => {
+  await Order.findByIdAndUpdate(req.params.id, { markedComplete: true }).exec();
+  const orderlist = await Order.find({ markedComplete: false }).exec();
+  res.json(orderlist);
+};

@@ -23,6 +23,7 @@ const orderSchema = new mongoose.Schema(
     orderedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     timeslots: [{ type: mongoose.Schema.Types.ObjectId, ref: "Timeslot" }],
     bookingDate: String,
+    markedComplete: { type: Boolean, default: false },
     timeslotsSE: [{ start: String, end: String }],
   },
   { timestamp: true }
