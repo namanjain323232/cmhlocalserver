@@ -8,7 +8,17 @@ const subcategorySchema = new mongoose.Schema ({
     name: {
       type: String,
       trim: true,
-      required: true  },      
+      required: true  }, 
+      hide: {
+        type: String,
+        enum: ["Yes", "No"],
+        // required:true 
+      },
+      type: {
+            type: String,
+            enum: ["Face to Face", "Online", "Both"],
+            // required:true
+           },          
     slug: {
       type: String,
       unique: true,
@@ -20,6 +30,7 @@ const subcategorySchema = new mongoose.Schema ({
        ref: 'Category', 
        required: true}
   },
+ 
   {timestamps: true}
   );
 
