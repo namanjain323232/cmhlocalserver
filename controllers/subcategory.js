@@ -59,8 +59,7 @@ const Vendor= mongoose.model("Vendor");
     exports.readsubcategory= async (req,res) => {
       try {
        const subcategory= await Subcategory.findOne({slug: req.params.slug}); 
-       console.log("subcat value NOW", subcategory);
-       if (!subcategory) {
+        if (!subcategory) {
         return res.status(400).send("Sub Category could not be found !!!!");
       }   
         res.json(subcategory);                
@@ -78,6 +77,8 @@ const Vendor= mongoose.model("Vendor");
         const subcat=  await Subcategory.findOneAndUpdate({slug: req.params.slug},
                                       { category: req.body.category,
                                         name: req.body.name,
+                                        hide:req.body.hide,
+                                        type:req.body.type,
                                         slug: slugify(req.body.name)                                        
                                       }, {new: true});
         console.log("value from subcat", subcat);
