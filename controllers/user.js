@@ -124,7 +124,13 @@ exports.markasread = async (req, res) => {
   res.json(querieslist);
 };
 exports.markascomplete = async (req, res) => {
+  const user = await User.findOne({ email: req.user.email }).exec();
+
+  // console.log(req.user, "check");
   await Order.findByIdAndUpdate(req.params.id, { markedComplete: true }).exec();
-  const orderlist = await Order.find({ markedComplete: false }).exec();
+  const orderlist = await Order.find({
+    "vendors.vendor": user._id,
+    markedComplete: false,
+  }).exec();
   res.json(orderlist);
 };

@@ -24,9 +24,10 @@ router.delete("/cart", authCheck, emptycart);
 router.post("/address", authCheck, saveaddress);
 router.get("/order", authCheck, orders);
 
+router.put("/markascomplete/:id", authCheck, markascomplete);
+
 router.get("/querieslist", getquerieslist);
 router.put("/markasread/:id", markasread);
-router.put("/markascomplete/:id", markascomplete);
 router.post("/contact", contact);
 
 module.exports = router;
