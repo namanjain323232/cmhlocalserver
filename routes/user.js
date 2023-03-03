@@ -15,6 +15,7 @@ const {
   getquerieslist,
   markasread,
   markascomplete,
+  markascancel,
 } = require("../controllers/user");
 
 // routes
@@ -25,6 +26,7 @@ router.post("/address", authCheck, saveaddress);
 router.get("/order", authCheck, orders);
 
 router.put("/markascomplete/:id", authCheck, markascomplete);
+router.put("/order/cancel/:id", authCheck, markascancel);
 
 router.get("/querieslist", getquerieslist);
 router.put("/markasread/:id", markasread);

@@ -24,6 +24,7 @@ const orderSchema = new mongoose.Schema(
     timeslots: [{ type: mongoose.Schema.Types.ObjectId, ref: "Timeslot" }],
     bookingDate: String,
     markedComplete: { type: Boolean, default: false },
+    markedCancel: { type: Boolean, default: false },
     timeslotsSE: [{ start: String, end: String }],
   },
   { timestamp: true }

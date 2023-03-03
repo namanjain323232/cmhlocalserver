@@ -96,7 +96,10 @@ exports.saveaddress = async (req, res) => {
 exports.orders = async (req, res) => {
   const user = await User.findOne({ email: req.user.email }).exec();
   console.log("USER from orders get", user);
-  const userOrders = await Order.find({ orderedBy: user._id })
+  const userOrders = await Order.find({
+    orderedBy: user._id,
+    markedCancel: false,
+  })
     .populate({
       path: "vendors.vendor",
       populate: [{ path: "vendorInfoId" }, { path: "subcategories" }],
@@ -131,6 +134,18 @@ exports.markascomplete = async (req, res) => {
   const orderlist = await Order.find({
     "vendors.vendor": user._id,
     markedComplete: false,
+  }).exec();
+  res.json(orderlist);
+};
+
+exports.markascancel = async (req, res) => {
+  const user = await User.findOne({ email: req.user.email }).exec();
+
+  console.log(req.user, "check");
+  await Order.findByIdAndUpdate(req.params.id, { markedCancel: true }).exec();
+  const orderlist = await Order.find({
+    orderedBy: user._id,
+    markedCancel: false,
   }).exec();
   res.json(orderlist);
 };
