@@ -1,22 +1,23 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const schema = mongoose.Schema;
 
-const userSchema = new schema({
+const userSchema = new schema(
+  {
     email: {
-        type:String,
-        unique: true,
-        index:true
+      type: String,
+      unique: true,
+      index: true,
     },
     role: {
-        type: String,
-        default: "subscriber"
+      type: String,
+      default: "subscriber",
     },
     password: {
-        type:String        
+      type: String,
     },
     name: {
-        type: String
-    } ,
+      type: String,
+    },
     googleId: String,
     facebookId: String,
     url: String,
