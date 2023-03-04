@@ -268,6 +268,7 @@ exports.listrelatedvendors = async (req, res) => {
   const related = await Vendor.find({
     _id: { $ne: vendor._id },
     category: vendor.category,
+    "areasCovered.place_add": req.params.location,
   })
     .limit(3)
     .populate("category")
@@ -275,6 +276,8 @@ exports.listrelatedvendors = async (req, res) => {
     .populate("postedBy")
     .populate("vendorInfoId")
     .exec();
+
+  console.log(related);
 
   res.json(related);
 };

@@ -17,7 +17,7 @@ const {
   vendorcount,
   vendorRating,
   listrelatedvendors,
-  searchfilters
+  searchfilters,
 } = require("../controllers/vendor");
 
 // routes
@@ -30,13 +30,13 @@ router.get("/vendor/:id", getvendor);
 router.put("/vendor/:id", authCheck, vendorCheck, updatevendor);
 router.delete("/vendor/:id", authCheck, removevendor);
 
-router.post("/vendors",list);
+router.post("/vendors", list);
 
 //route for star rating
-router.post("/vendor/rating/:id",authCheck, vendorRating );
+router.post("/vendor/rating/:id", authCheck, vendorRating);
 
 //route for listing other related vendors in the area
-router.get("/vendors/related/:id", listrelatedvendors);
+router.get("/vendors/related/:id/:location", listrelatedvendors);
 
 //route for search filters
 router.post("/search/filters", searchfilters);
