@@ -149,3 +149,20 @@ exports.markascancel = async (req, res) => {
   }).exec();
   res.json(orderlist);
 };
+
+exports.vendorMarkedCancel = async (req, res) => {
+  const user = await User.findOne({ email: req.user.email }).exec();
+
+  console.log(req.user, "check");
+  await Order.findByIdAndUpdate(req.params.id, {
+    vendorCancel: true,
+    cancelReason: req.params.reason,
+  }).exec();
+  const orderlist = await Order.find({
+    "vendors.vendor": user._id,
+    markedCancel: false,
+    vendorCancel: false,
+  }).exec();
+  console.log(req.params.reason);
+  res.json(orderlist);
+};

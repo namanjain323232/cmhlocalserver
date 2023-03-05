@@ -25,6 +25,8 @@ const orderSchema = new mongoose.Schema(
     bookingDate: String,
     markedComplete: { type: Boolean, default: false },
     markedCancel: { type: Boolean, default: false },
+    vendorCancel: { type: Boolean, default: false },
+    cancelReason: { type: String },
     timeslotsSE: [{ start: String, end: String }],
   },
   { timestamp: true }

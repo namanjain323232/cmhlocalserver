@@ -17,6 +17,8 @@ exports.getvendororders = async (req, res) => {
     const orders = await Order.find({
       "vendors.vendor": req.params.vendorid,
       markedComplete: false,
+      markedCancel: false,
+      vendorCancel: false,
     })
       .populate("orderedBy")
       .exec();

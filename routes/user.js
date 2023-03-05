@@ -16,6 +16,7 @@ const {
   markasread,
   markascomplete,
   markascancel,
+  vendorMarkedCancel,
 } = require("../controllers/user");
 
 // routes
@@ -27,6 +28,7 @@ router.get("/order", authCheck, orders);
 
 router.put("/markascomplete/:id", authCheck, markascomplete);
 router.put("/order/cancel/:id", authCheck, markascancel);
+router.put("/order/vendorcancel/:id/:reason", authCheck, vendorMarkedCancel);
 
 router.get("/querieslist", getquerieslist);
 router.put("/markasread/:id", markasread);
